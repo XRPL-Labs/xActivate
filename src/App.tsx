@@ -63,6 +63,7 @@ export default function App() {
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY_DEV);
   useEffect(() => {
+    alert(xAppToken);
     xumm.environment.ott?.then(profile => {
 
       // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
