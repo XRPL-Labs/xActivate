@@ -82,7 +82,7 @@ export default function App() {
         case 'CUSTOM':
           // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
           // If var nodewss contains 'hooks' and 'v3', users can automatically fund their account. Otherwise, they can't yet.
-          if (profile?.nodewss.includes('hooks') && profile?.nodewss.includes('v3')) {
+          if (profile?.nodewss?.includes('hooks') && profile?.nodewss?.includes('v3')) {
             fundAccount('https://faucet.devnet.rippletest.net/accounts', profile?.account || '')
             setMainPage(<CustomNet />)
           } else {
