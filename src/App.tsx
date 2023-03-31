@@ -17,7 +17,7 @@ const queryClient = new QueryClient()
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
 
-fetch(`/__log?${encodeURI(xAppToken)}`)
+// fetch(`/__log?${encodeURI(xAppToken)}`)
 
 export default function App() {
 
@@ -57,13 +57,12 @@ export default function App() {
       mode: 'no-cors'
     }).then((r) => {
       console.log(r);
-      fetch(`/__log?${encodeURI(JSON.stringify(r.text(), null, 4))}`)
+      // fetch(`/__log?${encodeURI(JSON.stringify(r.text(), null, 4))}`)
     })
   }
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY_DEV);
   useEffect(() => {
-    let fundURL = '';
     xumm.environment.ott?.then(profile => {
 
       // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
