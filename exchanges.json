@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Binance",
+        "url": "from-binance.md"
+    },
+    {
+        "name": "Bitstamp",
+        "url": "from-bitstamp.md"
+    },
+    {
+        "name": "Coinbase",
+        "url": "from-coinbase.md"
+    },
+    {
+        "name": "Crypto.com",
+        "url": "from-crypto.com.md"
+    },
+    {
+        "name": "Gatehub",
+        "url": "from-gatehub.md"
+    },
+    {
+        "name": "Kraken",
+        "url": "from-kraken.md"
+    },
+    {
+        "name": "Uphold",
+        "url": "from-uphold.md"
+    },
+    {
+        "name": "Wirex",
+        "url": "from-wirex.md"
+    }
+]

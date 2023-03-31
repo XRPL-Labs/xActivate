@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" type="text/css" media="all" href="https://use.typekit.net/vtt7ckl.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body class="bg-theme-tint">
+    <div id="root" class="font-sans"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+<script>
+  const head = document.getElementsByTagName('head')[0];
+  const link = document.createElement('link');
+  const currentUrl = window.location.href;
+  const searchParams = new URL(currentUrl).searchParams;
+  const xAppStyle = searchParams.get('xAppStyle') || 'light';
+  const xAppStyleURL = `https://xumm.app/assets/themes/xapp/xumm-${xAppStyle.toLowerCase()}/bootstrap.min.css`
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = xAppStyleURL;
+  link.media = 'all';
+  head.appendChild(link);
+  const body = document.querySelector('body');
+  body?.classList.add(xAppStyle.toLowerCase());
+</script>
