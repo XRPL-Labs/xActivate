@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
@@ -11,6 +10,8 @@ import iconChevronRight from './assets/chevron-right.png'
 import CustomNet from './Components/MainPage/CustomNet';
 import NotAvailable from './Components/MainPage/NotAvailable';
 import Loader from './Components/MainPage/Loader';
+import TangemPreFilled from './Components/MainPage/TangemPreFilled';
+import { XrplClient } from 'xrpl-client';
 
 const queryClient = new QueryClient()
 
@@ -23,6 +24,8 @@ export default function App() {
 
   const [markdownURL, setMarkdownURL] = useState<string | null>(null);
   const [mainPage, setMainPage] = useState<any>();
+  const [jwt, setJwt] = useState<string>();
+  const [isPrefilling, setIsPrefilling] = useState<boolean>(false);
 
   function GetMarkdown(url: any) {
     const { isLoading, error, data } = useQuery('repoData', () =>
@@ -46,48 +49,95 @@ export default function App() {
     );
   }
 
-  function fundAccount(url: string, account: string) {
+  async function fundAccount(bearer: string, account: string, wss: string) {
     if (account === '') return false;
-    console.log(account);
-
-    fetch(url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: `{"destination": ${account}, "xrpAmount": "1010"}`,
-      mode: 'no-cors'
-    }).then((r) => {
-      console.log(r);
-      // fetch(`/__log?${encodeURI(JSON.stringify(r.text(), null, 4))}`)
+    let isPrefilled = false;
+    await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/auto`, {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${bearer}`,
+        'Content-Type': 'application/json',
+      }
     })
-  }
-  alert(xAppToken);
-  console.log(xAppToken);
-  const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY_DEV);
-  useEffect(() => {
-    xumm.environment.ott?.then(profile => {
 
-      // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
+    const XRPLClient = new XrplClient('wss://s.devnet.rippletest.net:51233');
+    await XRPLClient.send({
+      "command": "account_info",
+      "account": account,
+    }).then(response => {
+      if (response && response.account_data.Balance > 10000) {
+        setMainPage(<DevNet isPrefilling={false} />);
+        isPrefilled = true;
+      }
+    })
+
+    return isPrefilled;
+  }
+
+  async function checkIfTangemCardCanBePrefilled(bearer: string) {
+    let canBePrefilled = false
+    let check = fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${bearer}`,
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => response.json()).then(r => {
+      fetch(`/__log?${encodeURI(JSON.stringify(r, null, 4))}`)
+
+      if (r.eligible === true) {
+        canBePrefilled = true;
+      }
+    });
+
+    return canBePrefilled;
+  }
+
+  async function prefillTangemCard(bearer: string) {
+    const prefillRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${bearer}`,
+        'Content-Type': 'application/json',
+      }
+    })
+    fetch(`/__log?${encodeURI(JSON.stringify(await prefillRequest.json(), null, 4))}`)
+  }
+
+  const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
+  fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`)
+  useEffect(() => {
+    let bearerFromSdk: string = '';
+    xumm.environment.bearer?.then(bearer => {
+      fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
+      bearerFromSdk = bearer;
+      setJwt(bearer);
+    })
+    xumm.environment.ott?.then(async profile => {
+      fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
       switch (profile?.nodetype) {
         case 'MAINNET':
-          setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} />);
+          if (profile.accounttype === 'TANGEM') {
+            prefillTangemCard(bearerFromSdk);
+            if (await checkIfTangemCardCanBePrefilled(bearerFromSdk)) {
+              setMainPage(<TangemPreFilled />)
+            } else {
+              setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} />);
+            }
+          } else {
+            setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} />);
+          }
           return;
         case 'DEVNET':
-          fundAccount('https://faucet.devnet.rippletest.net/accounts', profile?.account || '')
-          setMainPage(<DevNet />);
-          return;
         case 'TESTNET':
-          fundAccount('https://faucet.altnet.rippletest.net/accounts', profile?.account || '')
-          setMainPage(<DevNet />);
-          return;
         case 'CUSTOM':
-          // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
-          // If var nodewss contains 'hooks' and 'v3', users can automatically fund their account. Otherwise, they can't yet.
-          if (profile?.nodewss?.includes('hooks') && profile?.nodewss?.includes('v3')) {
-            fundAccount('https://faucet.devnet.rippletest.net/accounts', profile?.account || '')
-            setMainPage(<CustomNet />)
-          } else {
-            setMainPage(<NotAvailable />);
-          }
+          setMainPage(<DevNet isPrefilling={true} />);
+          let prefill = await fundAccount(bearerFromSdk, profile.account || '', profile.nodewss || '')
+          fetch(`/__log?${encodeURI(JSON.stringify(prefill, null, 4))}`)
+          if (prefill)
+            window.setTimeout(() => {
+              xumm.xapp?.close();
+            }, 5000)
           return;
         default:
           setMainPage(<Loader />);
