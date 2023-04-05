@@ -1,19 +1,18 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import './App.css'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Xumm } from 'xumm';
-import MainNet from './Components/MainPage/MainNet';
-import NotFound from './Components/MainPage/NotFound';
-import DevNet from './Components/MainPage/DevNet';
 import iconChevronRight from './assets/chevron-right.png'
-import CustomNet from './Components/MainPage/CustomNet';
-import NotAvailable from './Components/MainPage/NotAvailable';
-import Loader from './Components/MainPage/Loader';
-import TangemPreFilled from './Components/MainPage/TangemPreFilled';
+import iconChevronLeft from './assets/chevron-left.png'
 import { XrplClient } from 'xrpl-client';
 
 const queryClient = new QueryClient()
+
+const MainNet = lazy(() => import('./Components/MainPage/MainNet'));
+const DevNet = lazy(() => import('./Components/MainPage/DevNet'));
+const Loader = lazy(() => import('./Components/MainPage/Loader'));
+const TangemPreFilled = lazy(() => import('./Components/MainPage/TangemPreFilled'));
 
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
@@ -38,12 +37,6 @@ export default function App() {
     if (error) return (<p>'An error has occurred: ' + error</p>)
     return (
       <>
-        <div className="fixed shadow-sm left-0 top-0 w-full bg-[rgb(var(--themeColorBackgroundPrimary))] py-2 px-4 border-b border-[rgb(var(--colorSilver))]" onClick={() => { setMarkdownURL(null); }}>
-          <div className="flex gap-3 items-center">
-            <img src={iconChevronRight} className="m-0 rotate-180 h-4" />
-            <span className="font-bold">Back</span>
-          </div>
-        </div>
         <ReactMarkdown children={data || ''}></ReactMarkdown>
       </>
     );
@@ -118,7 +111,7 @@ export default function App() {
       switch (profile?.nodetype) {
         case 'MAINNET':
           if (profile.accounttype === 'TANGEM') {
-            prefillTangemCard(bearerFromSdk);
+            // prefillTangemCard(bearerFromSdk);
             if (await checkIfTangemCardCanBePrefilled(bearerFromSdk)) {
               setMainPage(<TangemPreFilled />)
             } else {
@@ -151,13 +144,20 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <div className="flex gap-4 flex-col prose">
-        {markdownURL !== null ?
-          <GetMarkdown url={markdownURL} />
-          :
-          mainPage
-        }
-      </div>
+      <Suspense>
+        <div className="flex gap-4 flex-col prose">
+          {markdownURL !== null ?
+            <>
+              <GetMarkdown url={markdownURL} />
+              <div className="fixed left-0 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px]">
+                <button onClick={() => setMarkdownURL(null)} className="button button--blue text-black w-full py-[16px] rounded-[20px] flex items-center justify-center gap-2"><img className="m-0" src={iconChevronLeft} /><p className="m-0">Back</p></button>
+              </div>
+            </>
+            :
+            mainPage
+          }
+        </div>
+      </Suspense>
     </QueryClientProvider>
   )
 }
