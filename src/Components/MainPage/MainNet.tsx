@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 
+
 const Loader = lazy(() => import('./Loader'));
 const Manual = lazy(() => import('./Activate/Manual'));
 const Tangem = lazy(() => import('./Activate/Tangem'));
@@ -46,19 +47,21 @@ export default function MainNet(props: any) {
     }, [])
 
     return (
-        <div className="w-full h-full flex flex-col items-start relative">
-            <div className="w-full flex flex-col">
-                <img src={imageActivateAccount} className="w-[40%] mx-auto" />
-                <h1 className="text-center text-2xl text-primary">Activate your account</h1>
+        <>
+            <div className="w-full h-full flex flex-col items-start relative">
+                <div className="w-full flex flex-col">
+                    <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                    <h1 className="text-center text-2xl text-primary">Activate your account</h1>
+                </div>
+                <Suspense fallback={<Loader />}>
+                    {activationType === 'manual' &&
+                        <Manual xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} />
+                    }
+                    {activationType === 'tangem' &&
+                        <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} />
+                    }
+                </Suspense>
             </div>
-            <Suspense fallback={<Loader />}>
-                {activationType === 'manual' &&
-                    <Manual xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} />
-                }
-                {activationType === 'tangem' &&
-                    <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} />
-                }
-            </Suspense>
-        </div>
+        </>
     )
 };
