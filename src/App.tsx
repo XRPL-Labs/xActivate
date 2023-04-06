@@ -12,12 +12,22 @@ const queryClient = new QueryClient()
 const MainNet = lazy(() => import('./Components/MainPage/MainNet'));
 const DevNet = lazy(() => import('./Components/MainPage/DevNet'));
 const Loader = lazy(() => import('./Components/MainPage/Loader'));
-const TangemPreFilled = lazy(() => import('./Components/MainPage/TangemPreFilled'));
 
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
+const xAppStyle = searchParams.get('xAppStyle');
 
-// fetch(`/__log?${encodeURI(xAppToken)}`)
+const userXAppsRequest = await fetch('https://xumm.app/api/v1/app/xapp/shortlist?featured=1', {
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer OTT:${xAppToken}`
+  }
+})
+const userXApps = await userXAppsRequest.json();
+// fetch(`/__log?${encodeURI(JSON.stringify('userXApps', null, 4))}`)
+// fetch(`/__log?${encodeURI(JSON.stringify(userXAppsRequest, null, 4))}`)
+// fetch(`/__log?${encodeURI(JSON.stringify(userXApps, null, 4))}`)
+
 
 export default function App() {
 
@@ -76,7 +86,7 @@ export default function App() {
         'Content-Type': 'application/json',
       }
     }).then((response) => response.json()).then(r => {
-      fetch(`/__log?${encodeURI(JSON.stringify(r, null, 4))}`)
+      // fetch(`/__log?${encodeURI(JSON.stringify(r, null, 4))}`)
 
       if (r.eligible === true) {
         canBePrefilled = true;
@@ -94,7 +104,7 @@ export default function App() {
         'Content-Type': 'application/json',
       }
     })
-    fetch(`/__log?${encodeURI(JSON.stringify(await prefillRequest.json(), null, 4))}`)
+    // fetch(`/__log?${encodeURI(JSON.stringify(await prefillRequest.json(), null, 4))}`)
   }
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
@@ -102,24 +112,15 @@ export default function App() {
   useEffect(() => {
     let bearerFromSdk: string = '';
     xumm.environment.bearer?.then(bearer => {
-      fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
+      // fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
       bearerFromSdk = bearer;
       setJwt(bearer);
     })
     xumm.environment.ott?.then(async profile => {
-      fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
+      // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
       switch (profile?.nodetype) {
         case 'MAINNET':
-          if (profile.accounttype === 'TANGEM') {
-            // prefillTangemCard(bearerFromSdk);
-            if (await checkIfTangemCardCanBePrefilled(bearerFromSdk)) {
-              setMainPage(<TangemPreFilled />)
-            } else {
-              setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} />);
-            }
-          } else {
-            setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} />);
-          }
+          setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} />);
           return;
         case 'DEVNET':
         case 'TESTNET':
@@ -164,21 +165,9 @@ export default function App() {
 
 /* Todo:
 
-  - Add xAppToken to project + xumm sdk
-  - Display choices based on network
-  - Build each choice
+  - Show/hide on/offramp based on eligible
 
-  - Choices on mainnet:
-    -> Voucher
-      -> Hoe, wat waar wanneer?
-    -> OnOffRamp
-      -> xApp openen
-    -> Exchange deposit instructies
-      -> Kies exchange
-      -> Laat instructies zien
-      -> Gebruiker moet terug kunnen
-
-  - Altnet
-    -> Concept uitleggen -> WTF?
+  - Move logic for filling tangem's to MainNet component
+  - Move logic for filling acconuts on test/dev to DevNet component
 
 */
