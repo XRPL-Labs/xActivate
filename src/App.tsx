@@ -77,25 +77,6 @@ export default function App() {
     return isPrefilled;
   }
 
-  async function checkIfTangemCardCanBePrefilled(bearer: string) {
-    let canBePrefilled = false
-    let check = fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${bearer}`,
-        'Content-Type': 'application/json',
-      }
-    }).then((response) => response.json()).then(r => {
-      // fetch(`/__log?${encodeURI(JSON.stringify(r, null, 4))}`)
-
-      if (r.eligible === true) {
-        canBePrefilled = true;
-      }
-    });
-
-    return canBePrefilled;
-  }
-
   async function prefillTangemCard(bearer: string) {
     const prefillRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}`, {
       method: 'PATCH',

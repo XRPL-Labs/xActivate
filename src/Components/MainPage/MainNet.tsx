@@ -1,28 +1,22 @@
-import { useEffect, useState } from "react";
-import iconChevronDown from '../../assets/chevron-down.png'
-import iconChevronLeft from '../../assets/chevron-left.png'
-import exchanges from '../../../exchanges.json'
+import { Suspense, lazy, useEffect, useState } from "react";
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
-import Manual from "./Activate/Manual";
+
+const Loader = lazy(() => import('./Loader'));
+const Manual = lazy(() => import('./Activate/Manual'));
+const Tangem = lazy(() => import('./Activate/Tangem'));
 
 async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string) {
-    let canBePrefilled = false
-    let check = fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
+    let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
         method: "GET",
         headers: {
             'Authorization': `Bearer ${bearer}`,
             'Content-Type': 'application/json',
         }
-    }).then((response) => response.json()).then(r => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(r, null, 4))}`)
+    })
 
-        if (r.eligible === true) {
-            canBePrefilled = true;
-        }
-    });
-
-    return canBePrefilled;
+    let eligibleResult = await check.json();
+    return eligibleResult.eligible;
 }
 
 export default function MainNet(props: any) {
@@ -32,35 +26,24 @@ export default function MainNet(props: any) {
         imageActivateAccount = imageAddAccount
     }
 
-    fetch(`/__log?${encodeURI(JSON.stringify(props.profile.accounttype, null, 4))}`)
+    // fetch(`/__log?${encodeURI(JSON.stringify(props.profile.accounttype, null, 4))}`)
+    const [activationType, setActivationType] = useState<string>('')
+    const [amount, setAmount] = useState<number>(0);
 
-    if (props.profile.accounttype === 'TANGEM') {
-        (async () => {
-            if (await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)) {
-            } else {
-            }
-        })()
-    }
-
-    const [activationType, setActivationType] = useState<string>('');
-    const [exchange, setExchange] = useState<string>('');
-    const [showDropdown, setShowDropdown] = useState<boolean>(false);
-
-    function openOnOffRampXApp() {
-        if (typeof (window as any).ReactNativeWebView !== 'undefined') {
-            (window as any).ReactNativeWebView.postMessage(JSON.stringify({
-                command: 'xAppNavigate',
-                xApp: 'xumm.onofframp',
-                title: 'XUMM OnOfframp',
-                extraData: {
-                    ott: props.xAppToken,
-                    origin: 'xActivate'
+    useEffect(() => {
+        if (props.profile.accounttype === 'TANGEM') {
+            (async () => {
+                const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
+                if (prefillCheck.eligible) {
+                    // setAmount(prefillCheck.amount);
+                    setActivationType('tangem')
+                } else {
+                    setAmount(150);
+                    setActivationType('tangem');
                 }
-            }))
+            })()
         }
-    }
-
-
+    }, [])
 
     return (
         <div className="w-full h-full flex flex-col items-start relative">
@@ -68,7 +51,14 @@ export default function MainNet(props: any) {
                 <img src={imageActivateAccount} className="w-[40%] mx-auto" />
                 <h1 className="text-center text-2xl text-primary">Activate your account</h1>
             </div>
-            <Manual xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} />
+            <Suspense fallback={<Loader />}>
+                {activationType === 'manual' &&
+                    <Manual xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} />
+                }
+                {activationType === 'tangem' &&
+                    <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} />
+                }
+            </Suspense>
         </div>
     )
 };
