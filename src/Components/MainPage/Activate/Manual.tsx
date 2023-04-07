@@ -27,6 +27,7 @@ export default function Manual(props: any) {
             }))
         }
     }
+
     return (
         <>
             {activationType === 'exchange' ?

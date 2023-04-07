@@ -93,31 +93,32 @@ export default function App() {
   useEffect(() => {
     let bearerFromSdk: string = '';
     xumm.environment.bearer?.then(bearer => {
-      // fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
       bearerFromSdk = bearer;
       setJwt(bearer);
-    })
-    xumm.environment.ott?.then(async profile => {
-      // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
-      switch (profile?.nodetype) {
-        case 'MAINNET':
-          setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} />);
-          return;
-        case 'DEVNET':
-        case 'TESTNET':
-        case 'CUSTOM':
-          setMainPage(<DevNet isPrefilling={true} />);
-          let prefill = await fundAccount(bearerFromSdk, profile.account || '', profile.nodewss || '')
-          fetch(`/__log?${encodeURI(JSON.stringify(prefill, null, 4))}`)
-          if (prefill)
-            window.setTimeout(() => {
-              xumm.xapp?.close();
-            }, 5000)
-          return;
-        default:
-          setMainPage(<Loader />);
-      }
+    }).then(() => {
+      xumm.environment.ott?.then(async profile => {
+        // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
+        switch (profile?.nodetype) {
+          case 'MAINNET':
+            setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
+            return;
+          case 'DEVNET':
+          case 'TESTNET':
+          case 'CUSTOM':
+            setMainPage(<DevNet isPrefilling={true} />);
+            let prefill = await fundAccount(bearerFromSdk, profile.account || '', profile.nodewss || '')
+            fetch(`/__log?${encodeURI(JSON.stringify(prefill, null, 4))}`)
+            if (prefill)
+              window.setTimeout(() => {
+                xumm.xapp?.close();
+              }, 5000)
+            return;
+          default:
+            setMainPage(<Loader />);
+        }
+      });
     });
+
   }, []);
 
   function toggleMarkdownURL(url: string) {

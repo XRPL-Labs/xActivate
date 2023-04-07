@@ -17,7 +17,10 @@ async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string
     })
 
     let eligibleResult = await check.json();
-    return eligibleResult.eligible;
+    if (eligibleResult && eligibleResult.eligible) {
+        return eligibleResult.eligible;
+    }
+    return false;
 }
 
 export default function MainNet(props: any) {
@@ -26,8 +29,6 @@ export default function MainNet(props: any) {
     if (props.xAppStyle === 'light') {
         imageActivateAccount = imageAddAccount
     }
-
-    // fetch(`/__log?${encodeURI(JSON.stringify(props.profile.accounttype, null, 4))}`)
     const [activationType, setActivationType] = useState<string>('')
     const [amount, setAmount] = useState<number>(0);
 
@@ -35,8 +36,9 @@ export default function MainNet(props: any) {
         if (props.profile.accounttype === 'TANGEM') {
             (async () => {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
-                if (prefillCheck.eligible) {
-                    // setAmount(prefillCheck.amount);
+                
+                if (prefillCheck) {
+                    setAmount(prefillCheck.amount);
                     setActivationType('tangem')
                 } else {
                     setAmount(150);
@@ -58,7 +60,7 @@ export default function MainNet(props: any) {
                         <Manual xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} />
                     }
                     {activationType === 'tangem' &&
-                        <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} />
+                        <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} />
                     }
                 </Suspense>
             </div>
