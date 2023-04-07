@@ -33,7 +33,7 @@ export default function Manual(props: any) {
             {activationType === 'exchange' ?
                 <>
                     <div className="flex items-start justify-start flex-col">
-                        <p className="text-primary font-bold m-0 text-left">Please select the exchange you want to use.</p>
+                        <p className="text-primary font-bold m-0 text-left mb-2">Please select the exchange you want to use.</p>
                         <p className="text-sm text-secondary m-0">After you choose an exchange, the instructions for this exchange will be shown.</p>
                         <div className="w-full bg-white px-4 py-[16px] mt-2 border border-[rgb(--var(colorSilver))] rounded-xl flex justify-between items-center relative" onClick={() => { setShowDropdown(!showDropdown) }}>
                             <span>Select an option</span>
@@ -58,7 +58,7 @@ export default function Manual(props: any) {
                     <a href="" className="mt-2 text-[rgb(var(--colorBlue))] font-bold text-left">Read more about account activation</a>
                     <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                         <button onClick={() => openOnOffRampXApp()} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Use On/Offramp</button>
-                        <button onClick={() => setActivationType('exchange')} className="w-full underline text-secondary">How to use an exchange?</button>
+                        <button onClick={() => setActivationType('exchange')} className="w-full underline text-secondary">Use an exchange</button>
                     </div>
                 </>
             }

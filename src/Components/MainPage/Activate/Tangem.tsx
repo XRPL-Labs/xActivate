@@ -15,7 +15,6 @@ export default function Tangem(props: any) {
             }
         })
         const prefillResult = await prefillRequest.json();
-        fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
         if (prefillResult.activated === true) {
             window.setTimeout(() => {
                 setShowConfetti(true);
@@ -48,13 +47,13 @@ export default function Tangem(props: any) {
                     <p className="m-0 text-secondary">You can now close the xApp.</p>
                 </>
             }
-            <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
+            <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0 ">
                 <button onClick={() => {
                     isActivated ?
                         props.xumm.xapp.close()
                         :
                         setIsActivating(true); activateTangemCard(props.bearer)
-                }} className={`button ${isActivated ? 'bg-black' : 'bg-[rgb(var(--colorBlue))]'} text-white w-full py-[16px] rounded-[20px] text-lg flex items-center justify-center gap-2`}>
+                }} className={`button ${isActivated ? 'bg-black' : 'bg-[rgb(var(--colorBlue))]'} text-white w-full py-[16px] rounded-[20px] text-lg flex items-center justify-center gap-2 active:outline-none focus:outline-none`}>
                     {isActivating && !isActivated ?
                         <>
                             <span className="block w-4 h-4 rounded-full border-[3px] border-white !border-t-transparent animate-spin"></span>

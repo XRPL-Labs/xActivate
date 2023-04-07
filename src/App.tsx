@@ -17,24 +17,11 @@ const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
 const xAppStyle = searchParams.get('xAppStyle');
 
-const userXAppsRequest = await fetch('https://xumm.app/api/v1/app/xapp/shortlist?featured=1', {
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer OTT:${xAppToken}`
-  }
-})
-const userXApps = await userXAppsRequest.json();
-// fetch(`/__log?${encodeURI(JSON.stringify('userXApps', null, 4))}`)
-// fetch(`/__log?${encodeURI(JSON.stringify(userXAppsRequest, null, 4))}`)
-// fetch(`/__log?${encodeURI(JSON.stringify(userXApps, null, 4))}`)
-
-
 export default function App() {
 
   const [markdownURL, setMarkdownURL] = useState<string | null>(null);
   const [mainPage, setMainPage] = useState<any>();
   const [jwt, setJwt] = useState<string>();
-  const [isPrefilling, setIsPrefilling] = useState<boolean>(false);
 
   function GetMarkdown(url: any) {
     const { isLoading, error, data } = useQuery('repoData', () =>
@@ -52,41 +39,6 @@ export default function App() {
     );
   }
 
-  async function fundAccount(bearer: string, account: string, wss: string) {
-    if (account === '') return false;
-    let isPrefilled = false;
-    await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/auto`, {
-      method: "POST",
-      headers: {
-        'Authorization': `Bearer ${bearer}`,
-        'Content-Type': 'application/json',
-      }
-    })
-
-    const XRPLClient = new XrplClient('wss://s.devnet.rippletest.net:51233');
-    await XRPLClient.send({
-      "command": "account_info",
-      "account": account,
-    }).then(response => {
-      if (response && response.account_data.Balance > 10000) {
-        setMainPage(<DevNet isPrefilling={false} />);
-        isPrefilled = true;
-      }
-    })
-
-    return isPrefilled;
-  }
-
-  async function prefillTangemCard(bearer: string) {
-    const prefillRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${bearer}`,
-        'Content-Type': 'application/json',
-      }
-    })
-    // fetch(`/__log?${encodeURI(JSON.stringify(await prefillRequest.json(), null, 4))}`)
-  }
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`)
@@ -94,10 +46,21 @@ export default function App() {
     let bearerFromSdk: string = '';
     xumm.environment.bearer?.then(bearer => {
       bearerFromSdk = bearer;
+      const userXAppsRequest = fetch('https://xumm.app/api/v1/jwt/xapp/shortlist?featured=1', {
+        headers: {
+          'Authorization': `Bearer ${bearer}`,
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => response.json()).then(userXapps => {
+        fetch(`/__log?${encodeURI(JSON.stringify(userXapps, null, 4))}`)
+      })
+      // const userXApps = await userXAppsRequest.json();
+      // fetch(`/__log?${encodeURI(JSON.stringify('userXApps', null, 4))}`)
+      // fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
+        fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
         switch (profile?.nodetype) {
           case 'MAINNET':
             setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
@@ -105,13 +68,7 @@ export default function App() {
           case 'DEVNET':
           case 'TESTNET':
           case 'CUSTOM':
-            setMainPage(<DevNet isPrefilling={true} />);
-            let prefill = await fundAccount(bearerFromSdk, profile.account || '', profile.nodewss || '')
-            fetch(`/__log?${encodeURI(JSON.stringify(prefill, null, 4))}`)
-            if (prefill)
-              window.setTimeout(() => {
-                xumm.xapp?.close();
-              }, 5000)
+            setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} />);
             return;
           default:
             setMainPage(<Loader />);
