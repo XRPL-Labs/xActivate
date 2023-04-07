@@ -33,18 +33,31 @@ export default function Tangem(props: any) {
                     </video>
                 </div>
             }
-            <p className="m-0 text-secondary font-bold mb-4">Congrats! Your Tangem card seems to be eligible to be activated through Xumm.</p>
-            <p className="m-0 text-secondary">Please click the button below to pre fund your Tangem card with {props.amount} XRP.</p>
+            {!isActivated && !isActivating &&
+                <>
+                    <p className="m-0 text-secondary font-bold mb-4">Congrats! Your Tangem card seems to be eligible to be activated through Xumm.</p>
+                    <p className="m-0 text-secondary">Please click the button below to pre fund your Tangem card with {props.amount} XRP.</p>
+                </>
+            }
+            {isActivating && !isActivated &&
+                <p className="m-0 text-secondary font-bold">We're activating your account. Please stand by.</p>
+            }
+            {isActivated &&
+                <>
+                    <p className="m-0 text-secondary font-bold">Your account has succesfully been activated!</p>
+                    <p className="m-0 text-secondary">You can now close the xApp.</p>
+                </>
+            }
             <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                 <button onClick={() => {
                     isActivated ?
                         props.xumm.xapp.close()
                         :
                         setIsActivating(true); activateTangemCard(props.bearer)
-                }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">
+                }} className={`button ${isActivated ? 'bg-black' : 'bg-[rgb(var(--colorBlue))]'} text-white w-full py-[16px] rounded-[20px] text-lg flex items-center justify-center gap-2`}>
                     {isActivating && !isActivated ?
                         <>
-                            <span></span>
+                            <span className="block w-4 h-4 rounded-full border-[3px] border-white !border-t-transparent animate-spin"></span>
                             Activating
                         </>
                         :
