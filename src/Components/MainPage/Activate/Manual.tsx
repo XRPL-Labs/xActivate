@@ -4,9 +4,10 @@ import iconChevronLeft from '../../../assets/chevron-left.png'
 import exchanges from '../../../../exchanges.json'
 
 export default function Manual(props: any) {
-    const [activationType, setActivationType] = useState<string>('');
+
     const [exchange, setExchange] = useState<string>('');
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const [activationType, setUseExchange] = useState<boolean>();
 
     useEffect(() => {
         if (exchange !== '') {
@@ -30,7 +31,7 @@ export default function Manual(props: any) {
 
     return (
         <>
-            {activationType === 'exchange' ?
+            {props.useExchange === true ?
                 <>
                     <div className="flex items-start justify-start flex-col">
                         <p className="text-primary font-bold m-0 text-left mb-2">Please select the exchange you want to use.</p>
@@ -48,7 +49,7 @@ export default function Manual(props: any) {
                         </div>
                     </div>
                     <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
-                        <button onClick={() => setActivationType('')} className="button button--blue text-black w-full py-[16px] rounded-[20px] flex items-center justify-center gap-2"><img className="m-0" src={iconChevronLeft} /><p className="m-0">Back</p></button>
+                        <button onClick={() => { props.setUseExchange(false); setUseExchange(false) }} className="button button--blue text-black w-full py-[16px] rounded-[20px] flex items-center justify-center gap-2"><img className="m-0" src={iconChevronLeft} /><p className="m-0">Back</p></button>
                     </div>
                 </>
                 :
@@ -57,8 +58,14 @@ export default function Manual(props: any) {
                     <p className="m-0 text-secondary">You can use either an exchange or the Xumm Onramp and Offramp xApp to activate your account on the XRP Ledger.</p>
                     <a href="" className="mt-2 text-[rgb(var(--colorBlue))] font-bold text-left">Read more about account activation</a>
                     <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
-                        <button onClick={() => openOnOffRampXApp()} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Use On/Offramp</button>
-                        <button onClick={() => setActivationType('exchange')} className="w-full underline text-secondary">Use an exchange</button>
+                        {props.canOnOffRamp === true ?
+                            <>
+                                <button onClick={() => openOnOffRampXApp()} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Use On/Offramp</button>
+                                <button onClick={() => { props.setUseExchange(true); setUseExchange(true) }} className="w-full underline text-secondary">Use an exchange</button>
+                            </>
+                            :
+                            <button onClick={() => { props.setUseExchange(true); setUseExchange(true) }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Use an exchange</button>
+                        }
                     </div>
                 </>
             }

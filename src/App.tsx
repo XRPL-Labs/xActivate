@@ -15,7 +15,7 @@ const Loader = lazy(() => import('./Components/MainPage/Loader'));
 
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
-const xAppStyle = searchParams.get('xAppStyle');
+const xAppStyle = searchParams.get('xAppStyle')?.toLowerCase();
 
 export default function App() {
 
@@ -46,17 +46,6 @@ export default function App() {
     let bearerFromSdk: string = '';
     xumm.environment.bearer?.then(bearer => {
       bearerFromSdk = bearer;
-      const userXAppsRequest = fetch('https://xumm.app/api/v1/jwt/xapp/shortlist?featured=1', {
-        headers: {
-          'Authorization': `Bearer ${bearer}`,
-          'Content-Type': 'application/json',
-        }
-      }).then((response) => response.json()).then(userXapps => {
-        fetch(`/__log?${encodeURI(JSON.stringify(userXapps, null, 4))}`)
-      })
-      // const userXApps = await userXAppsRequest.json();
-      // fetch(`/__log?${encodeURI(JSON.stringify('userXApps', null, 4))}`)
-      // fetch(`/__log?${encodeURI(JSON.stringify(bearer, null, 4))}`)
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {

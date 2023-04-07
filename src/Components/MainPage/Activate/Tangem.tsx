@@ -27,7 +27,7 @@ export default function Tangem(props: any) {
         <div className="">
             {showConfetti &&
                 <div className="fixed inset-0 -z-10 w-full h-full">
-                    <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+                    <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-50">
                         <source src={confetti} type="video/webm" />
                     </video>
                 </div>

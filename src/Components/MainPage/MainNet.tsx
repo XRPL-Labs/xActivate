@@ -30,9 +30,26 @@ export default function MainNet(props: any) {
         imageActivateAccount = imageAddAccount
     }
     const [activationType, setActivationType] = useState<string>('')
+    const [useExchange, setUseExchange] = useState(false);
     const [amount, setAmount] = useState<number>(0);
+    const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false)
 
     useEffect(() => {
+        const userXAppsRequest = fetch('https://xumm.app/api/v1/jwt/xapp/shortlist?featured=1', {
+            headers: {
+                'Authorization': `Bearer ${props.bearer}`,
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => response.json()).then(userXApps => {
+            if (userXApps.featured) {
+                userXApps.featured.map((flag: any) => {
+                    if (flag.identifier === 'xumm.onofframp') {
+                        setCanOnOffRamp(true);
+                    }
+                })
+            }
+        })
+
         if (props.profile.accounttype === 'TANGEM') {
             (async () => {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
@@ -58,10 +75,10 @@ export default function MainNet(props: any) {
                 </div>
                 <Suspense fallback={<Loader />}>
                     {activationType === 'manual' &&
-                        <Manual xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} />
+                        <Manual setUseExchange={setUseExchange} useExchange={useExchange} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} />
                     }
                     {activationType === 'tangem' &&
-                        <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} />
+                        <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} canOnOffRamp={canOnOffRamp} />
                     }
                 </Suspense>
             </div>
