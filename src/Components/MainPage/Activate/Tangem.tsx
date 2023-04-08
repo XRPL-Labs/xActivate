@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import confetti from '../../../assets/confetti.webm'
 
 export default function Tangem(props: any) {
     const [showConfetti, setShowConfetti] = useState<boolean>(false)
@@ -26,11 +25,7 @@ export default function Tangem(props: any) {
     return (
         <div className="">
             {showConfetti &&
-                <div className="fixed inset-0 -z-10 w-full h-full">
-                    <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-50">
-                        <source src={confetti} type="video/webm" />
-                    </video>
-                </div>
+                <></>
             }
             {!isActivated && !isActivating &&
                 <>

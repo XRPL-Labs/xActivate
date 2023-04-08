@@ -8,11 +8,4 @@ export default defineConfig({
   server: {
     port: 3040
   },
-  define: {
-    'process': {
-      env: {
-        NODE_DEBUG: false
-      }
-    }
-  }
 })
