@@ -56,7 +56,7 @@ export default function DevNet(props: any) {
                 <p className="m-0 text-secondary mb-4">An account on the XRP Ledger automatically becomes activated when the first 10 XRP are sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
                 {isPrefilled && !isPrefilling || test === true ?
                     <>
-                        <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10">
+                        <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10 opacity-50">
                             <ConfettiExplosion {...confettiProps} />
                         </div>
                         <p className="m-0 text-secondary font-bold">Your account has been activated with 1.000 XRP!</p>
