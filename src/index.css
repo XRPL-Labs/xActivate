@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.confetti-explosion-screen-0-2-719 {
+div[class*="confetti-explosion"] {
     z-index: -10;
     opacity: .5;
 }
