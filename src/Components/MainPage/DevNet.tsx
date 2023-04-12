@@ -2,9 +2,7 @@ import { useState } from "react"
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 import { XrplClient } from "xrpl-client"
-import ConfettiExplosion, { ConfettiProps } from 'react-confetti-explosion';
-
-
+import Confetti from "../Confetti";
 
 export default function DevNet(props: any) {
 
@@ -38,14 +36,6 @@ export default function DevNet(props: any) {
         });
     }
 
-    const confettiProps: ConfettiProps = {
-        width: 1500,
-        height: '170vh',
-        duration: 6000,
-        particleCount: 350
-    }
-    const test = true;
-
     return (
         <>
             <div className="w-full h-full flex flex-col items-start relative">
@@ -54,10 +44,10 @@ export default function DevNet(props: any) {
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>
                 </div>
                 <p className="m-0 text-secondary mb-4">An account on the XRP Ledger automatically becomes activated when the first 10 XRP are sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
-                {isPrefilled && !isPrefilling || test === true ?
+                {isPrefilled && !isPrefilling ?
                     <>
                         <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10 opacity-50">
-                            <ConfettiExplosion {...confettiProps} />
+                            <Confetti />
                         </div>
                         <p className="m-0 text-secondary font-bold">Your account has been activated with 1.000 XRP!</p>
                     </>

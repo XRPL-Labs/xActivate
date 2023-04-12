@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Confetti from '../../Confetti'
 
 export default function Tangem(props: any) {
     const [showConfetti, setShowConfetti] = useState<boolean>(false)
@@ -38,6 +39,9 @@ export default function Tangem(props: any) {
             }
             {isActivated &&
                 <>
+                    <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10 opacity-50">
+                        <Confetti />
+                    </div>
                     <p className="m-0 text-secondary font-bold">Your account has succesfully been activated!</p>
                     <p className="m-0 text-secondary">You can now close the xApp.</p>
                 </>
