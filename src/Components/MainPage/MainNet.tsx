@@ -18,7 +18,7 @@ async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string
 
     let eligibleResult = await check.json();
     if (eligibleResult && eligibleResult.eligible) {
-        return eligibleResult.eligible;
+        return eligibleResult;
     }
     return false;
 }
@@ -29,7 +29,7 @@ export default function MainNet(props: any) {
     if (props.xAppStyle === 'light') {
         imageActivateAccount = imageAddAccount
     }
-    const [activationType, setActivationType] = useState<string>('manual')
+    const [activationType, setActivationType] = useState<string>('')
     const [useExchange, setUseExchange] = useState(false);
     const [amount, setAmount] = useState<number>(0);
     const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false)
@@ -53,7 +53,7 @@ export default function MainNet(props: any) {
         if (props.profile.accounttype === 'TANGEM') {
             (async () => {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
-                if (prefillCheck) {
+                if (prefillCheck.eligible === true) {
                     setAmount(prefillCheck.amount);
                     setActivationType('tangem')
                 } else {
