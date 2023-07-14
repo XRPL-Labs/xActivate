@@ -56,8 +56,8 @@ export default function MainNet(props: any) {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
                 alert(JSON.stringify(prefillCheck, null, 4));
                 if (prefillCheck) {
-                    setAmount(prefillCheck.amount);
-                    setActivationType('tangem')
+                    setAmount(parseFloat(prefillCheck.amount.xrp.total));
+                    setActivationType('tangem');
                 } else {
                     setActivationType('manual');
                 }
@@ -65,7 +65,6 @@ export default function MainNet(props: any) {
         } else {
             setActivationType('manual');
         }
-        alert(import.meta.env.VITE_XAPP_TANGEM_ENDPOINT);
     }, [])
 
     return (
