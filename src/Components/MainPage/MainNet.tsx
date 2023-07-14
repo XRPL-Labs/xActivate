@@ -54,7 +54,7 @@ export default function MainNet(props: any) {
         if (props.profile.accounttype === 'TANGEM') {
             (async () => {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
-                alert(prefillCheck);
+                alert(JSON.stringify(prefillCheck, null, 4));
                 if (prefillCheck) {
                     setAmount(prefillCheck.amount);
                     setActivationType('tangem')
