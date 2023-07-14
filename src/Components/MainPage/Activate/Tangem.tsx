@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Confetti from '../../Confetti'
 
 export default function Tangem(props: any) {
-    const [showConfetti, setShowConfetti] = useState<boolean>(false)
     const [isActivated, setIsActivated] = useState<boolean>(false)
     const [isActivating, setIsActivating] = useState<boolean>(false)
     async function activateTangemCard(bearer: string) {
@@ -17,7 +16,6 @@ export default function Tangem(props: any) {
         const prefillResult = await prefillRequest.json();
         if (prefillResult.activated === true) {
             window.setTimeout(() => {
-                setShowConfetti(true);
                 setIsActivated(true);
             }, 2000)
         }
@@ -25,9 +23,6 @@ export default function Tangem(props: any) {
     }
     return (
         <div className="">
-            {showConfetti &&
-                <></>
-            }
             {!isActivated && !isActivating &&
                 <>
                     <p className="m-0 text-secondary font-bold mb-4">Congrats! Your Tangem card seems to be eligible to be activated through Xumm.</p>
