@@ -50,7 +50,7 @@ export default function Tangem(props: any) {
                 }} className={`button ${isActivated ? 'bg-black' : 'bg-[rgb(var(--colorBlue))]'} text-white w-full py-[16px] rounded-[20px] text-lg flex items-center justify-center gap-2 active:outline-none focus:outline-none`}>
                     {isActivating && !isActivated ?
                         <>
-                            <span className="block w-4 h-4 rounded-full border-[3px] border-white !border-t-transparent animate-spin"></span>
+                            <span className="block w-4 h-4 rounded-full border-[3px] border-white !border-t-[rgb(var(--colorBlue))] animate-spin"></span>
                             Activating
                         </>
                         :
