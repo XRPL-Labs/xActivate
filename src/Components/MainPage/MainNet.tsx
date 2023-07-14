@@ -29,7 +29,7 @@ export default function MainNet(props: any) {
     if (props.xAppStyle === 'light') {
         imageActivateAccount = imageAddAccount
     }
-    const [activationType, setActivationType] = useState<string>('')
+    const [activationType, setActivationType] = useState<string>('manual')
     const [useExchange, setUseExchange] = useState(false);
     const [amount, setAmount] = useState<number>(0);
     const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false)
