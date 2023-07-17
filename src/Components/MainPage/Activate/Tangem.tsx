@@ -26,11 +26,14 @@ export default function Tangem(props: any) {
             {!isActivated && !isActivating &&
                 <>
                     <p className="m-0 text-secondary font-bold mb-4">Congrats! Your Tangem card seems to be eligible to be activated through Xumm.</p>
-                    <p className="m-0 text-secondary">Please click the button below to pre fund your Tangem card with {props.amount} XRP.</p>
+                    <p className="m-0 text-secondary">Please click the button below to pre fund your Tangem card with <strong>{props.amount} XRP</strong>.</p>
                 </>
             }
             {isActivating && !isActivated &&
-                <p className="m-0 text-secondary font-bold">We're activating your account. Please stand by.</p>
+                <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center gap-4">
+                    <div className="w-16 h-16 border-8 border-black border-t-transparent animate-spin rounded-full"></div>
+                    <p className="m-0 text-secondary font-bold">We're activating your account. Please stand by.</p>
+                </div>
             }
             {isActivated &&
                 <>
