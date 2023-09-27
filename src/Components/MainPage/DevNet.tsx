@@ -16,13 +16,15 @@ export default function DevNet(props: any) {
     async function fundAccount() {
         if (props.profile.account === '') return false;
         setIsPrefilling(true);
-        await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/auto`, {
+        const activation = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/auto`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${props.bearer}`,
                 'Content-Type': 'application/json',
             }
         })
+
+        fetch(`/__log?${encodeURI(JSON.stringify(await activation.json(), null, 4))}`)
 
         const XRPLClient = new XrplClient(props.profile.nodewss);
         await XRPLClient.send({
@@ -33,6 +35,7 @@ export default function DevNet(props: any) {
             if (response && response.account_data.Balance > 10000) {
                 setIsPrefilling(false);
                 setIsPrefilled(true);
+            } else if (response && response.status === 'error') {
             }
         });
     }
