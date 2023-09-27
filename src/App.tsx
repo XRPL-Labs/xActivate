@@ -3,9 +3,7 @@ import './App.css'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Xumm } from 'xumm';
-import iconChevronRight from './assets/chevron-right.png'
 import iconChevronLeft from './assets/chevron-left.png'
-import { XrplClient } from 'xrpl-client';
 
 const queryClient = new QueryClient()
 
@@ -41,7 +39,6 @@ export default function App() {
 
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
-  // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`)
   useEffect(() => {
     let bearerFromSdk: string = '';
     xumm.environment.bearer?.then(bearer => {
@@ -49,13 +46,15 @@ export default function App() {
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
+        fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
         switch (profile?.nodetype) {
           case 'MAINNET':
+          case 'XAHAU':
             setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
             return;
           case 'DEVNET':
           case 'TESTNET':
+          case 'XAHAUTESTNET':
           case 'CUSTOM':
             setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} />);
             return;

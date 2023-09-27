@@ -29,6 +29,7 @@ export default function DevNet(props: any) {
             "command": "account_info",
             "account": props.profile.account,
         }).then(response => {
+            fetch(`/__log?${encodeURI(JSON.stringify(response, null, 4))}`)
             if (response && response.account_data.Balance > 10000) {
                 setIsPrefilling(false);
                 setIsPrefilled(true);
