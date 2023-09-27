@@ -46,7 +46,7 @@ export default function App() {
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`)
+        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`)
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
