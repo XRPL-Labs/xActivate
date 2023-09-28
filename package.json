@@ -11,6 +11,7 @@
   "dependencies": {
     "@kevinkoobs/xummstyleplugin": "^0.0.4",
     "@sentry/react": "^7.72.0",
+    "@sentry/vite-plugin": "^2.7.1",
     "assert": "^2.0.0",
     "react": "^18.2.0",
     "react-confetti-explosion": "^2.1.1",

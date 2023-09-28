@@ -17,7 +17,6 @@ async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string
     })
 
     let eligibleResult = await check.json();
-    // fetch(`/__log?${encodeURI(JSON.stringify(eligibleResult, null, 4))}`)
     if (eligibleResult && eligibleResult.eligible) {
         return eligibleResult;
     }
@@ -54,8 +53,10 @@ export default function MainNet(props: any) {
         if (props.profile.accounttype === 'TANGEM') {
             (async () => {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
+                fetch(`/__log?${encodeURI(JSON.stringify(prefillCheck, null, 4))}`)
                 if (prefillCheck) {
-                    setAmount(parseFloat(prefillCheck.amount.xrp.total));
+                    // setAmount(parseFloat(prefillCheck.amount.xrp.total));
+                    setAmount(parseFloat('100'));
                     setActivationType('tangem');
                 } else {
                     setActivationType('manual');

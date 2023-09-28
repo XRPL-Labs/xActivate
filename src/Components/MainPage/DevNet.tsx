@@ -3,7 +3,8 @@ import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 import { XrplClient } from "xrpl-client"
 import Confetti from "../Confetti";
-import Error from "../Error";
+import { Error as ErrorComponent } from "../Error";
+import * as Sentry from "@sentry/react";
 
 export default function DevNet(props: any) {
 
@@ -19,15 +20,33 @@ export default function DevNet(props: any) {
     async function fundAccount() {
         if (props.profile.account === '') return false;
         setIsPrefilling(true);
-        const activation = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/auto`, {
+        const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/auto`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${props.bearer}`,
                 'Content-Type': 'application/json',
             }
-        })
+        });
 
-        fetch(`/__log?${encodeURI(JSON.stringify(await activation.json(), null, 4))}`)
+        const activationResponse = await activationRequest.json();
+        if (activationResponse.error) {
+            Sentry.setContext("ActivationError", {
+                location: 'After activation call',
+                activationResponse: JSON.stringify(activationResponse, null, 4),
+                userProfile: JSON.stringify(props.profile, null, 4),
+                xAppT: props.xAppToken,
+                endpoint: `${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/auto`
+            })
+            Sentry.captureException(new Error('ActivationError'));
+            setShowError(true);
+            setIsPrefilling(false);
+            setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+
+            fetch(`/__log?${encodeURI(JSON.stringify(await activationResponse, null, 4))}`)
+            return false;
+
+        }
+
 
         const XRPLClient = new XrplClient(props.profile.nodewss);
         await XRPLClient.send({
@@ -39,7 +58,16 @@ export default function DevNet(props: any) {
                 setIsPrefilling(false);
                 setIsPrefilled(true);
             } else if (response && response.status === 'error') {
+                Sentry.setContext("ActivatedAccountFetchError", {
+                    location: 'After account_info call',
+                    accountInfoResponse: JSON.stringify(response, null, 4),
+                    activationResponse: JSON.stringify(activationResponse, null, 4),
+                    userProfile: JSON.stringify(props.profile, null, 4),
+                    xAppT: props.xAppToken,
+                })
+                Sentry.captureException(new Error('ActivationError'));
                 setShowError(true);
+                setIsPrefilling(false);
                 setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
             }
         });
@@ -48,8 +76,8 @@ export default function DevNet(props: any) {
     return (
         <>
             <div className="w-full h-full flex flex-col items-start relative">
-                {!showError &&
-                    <Error text={errorMessage} xumm={props.xumm} />
+                {showError &&
+                    <ErrorComponent text={errorMessage} xumm={props.xumm} />
                 }
                 <div className="w-full flex flex-col">
                     <img src={imageActivateAccount} className="w-[40%] mx-auto" />
@@ -81,10 +109,13 @@ export default function DevNet(props: any) {
                                 Activating account
                             </>
                         }
+                        {showError && !isPrefilling &&
+                            'Activation failed'
+                        }
                         {isPrefilled && !isPrefilling &&
                             'Close xApp'
                         }
-                        {!isPrefilled && !isPrefilling &&
+                        {!isPrefilled && !isPrefilling && !showError &&
                             "Activate account"
                         }
                     </button>

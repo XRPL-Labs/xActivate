@@ -4,7 +4,7 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Xumm } from 'xumm';
 import iconChevronLeft from './assets/chevron-left.png'
-import Error from './Components/Error';
+import { Error as ErrorComponent } from './Components/Error';
 import * as Sentry from "@sentry/react";
 
 const queryClient = new QueryClient()
@@ -65,7 +65,7 @@ export default function App() {
             setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} />);
             return;
           default:
-            setMainPage(<Error xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
+            setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
             return;
         }
       });

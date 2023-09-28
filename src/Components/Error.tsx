@@ -3,7 +3,7 @@ type ErrorProps = {
     xumm: any
 }
 
-export default function Error(props: ErrorProps) {
+export function Error(props: ErrorProps) {
     return (
         <div className="fixed inset-0 z-20 w-screen h-screen flex items-center justify-center px-4">
             <div className="absolute inset-0 bg-black/40"></div>
