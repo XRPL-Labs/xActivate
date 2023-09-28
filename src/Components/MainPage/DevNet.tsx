@@ -3,11 +3,14 @@ import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 import { XrplClient } from "xrpl-client"
 import Confetti from "../Confetti";
+import Error from "../Error";
 
 export default function DevNet(props: any) {
 
     const [isPrefilling, setIsPrefilling] = useState<boolean>(false);
     const [isPrefilled, setIsPrefilled] = useState<boolean>(false);
+    const [showError, setShowError] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
     let imageActivateAccount = imageAddAccountDark
     if (props.xAppStyle === 'light') {
         imageActivateAccount = imageAddAccount
@@ -36,6 +39,8 @@ export default function DevNet(props: any) {
                 setIsPrefilling(false);
                 setIsPrefilled(true);
             } else if (response && response.status === 'error') {
+                setShowError(true);
+                setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
             }
         });
     }
@@ -43,6 +48,9 @@ export default function DevNet(props: any) {
     return (
         <>
             <div className="w-full h-full flex flex-col items-start relative">
+                {!showError &&
+                    <Error text={errorMessage} xumm={props.xumm} />
+                }
                 <div className="w-full flex flex-col">
                     <img src={imageActivateAccount} className="w-[40%] mx-auto" />
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>

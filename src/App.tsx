@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Xumm } from 'xumm';
 import iconChevronLeft from './assets/chevron-left.png'
 import Error from './Components/Error';
+import * as Sentry from "@sentry/react";
 
 const queryClient = new QueryClient()
 
@@ -15,6 +16,10 @@ const Loader = lazy(() => import('./Components/MainPage/Loader'));
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
 const xAppStyle = searchParams.get('xAppStyle')?.toLowerCase();
+
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_URL,
+});
 
 export default function App() {
 
@@ -47,7 +52,7 @@ export default function App() {
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`)
+        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
@@ -61,6 +66,7 @@ export default function App() {
             return;
           default:
             setMainPage(<Error xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
+            return;
         }
       });
     });
