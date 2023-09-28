@@ -6,6 +6,7 @@ import { Xumm } from 'xumm';
 import iconChevronLeft from './assets/chevron-left.png'
 import { Error as ErrorComponent } from './Components/Error';
 import * as Sentry from "@sentry/react";
+import { XrplClient } from 'xrpl-client';
 
 const queryClient = new QueryClient()
 
@@ -52,7 +53,18 @@ export default function App() {
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
+        const XRPLClient = new XrplClient(profile?.nodewss);
+        const accountInfo = await XRPLClient.send({
+          "command": "account_info",
+          "account": profile?.account,
+        })
+        if (accountInfo && accountInfo.account_data) {
+          // Assume that account is found and therefore activated, so don't use xApp
+          setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
+          return;
+        }
+
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
