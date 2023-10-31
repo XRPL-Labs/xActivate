@@ -32,7 +32,8 @@ export default function MainNet(props: any) {
     const [activationType, setActivationType] = useState<string>('')
     const [useExchange, setUseExchange] = useState(false);
     const [amount, setAmount] = useState<number>(0);
-    const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false)
+    const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false);
+    const [useAccount, setUseAccount] = useState<boolean>(false);
 
     useEffect(() => {
         const userXAppsRequest = fetch('https://xumm.app/api/v1/jwt/xapp/shortlist?featured=1', {
@@ -55,8 +56,8 @@ export default function MainNet(props: any) {
                 const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
                 fetch(`/__log?${encodeURI(JSON.stringify(prefillCheck, null, 4))}`)
                 if (prefillCheck) {
-                    // setAmount(parseFloat(prefillCheck.amount.xrp.total));
-                    setAmount(parseFloat('100'));
+                    setAmount(parseFloat(prefillCheck.amount.xrp.total));
+                    // setAmount(parseFloat('100'));
                     setActivationType('tangem');
                 } else {
                     setActivationType('manual');
@@ -79,7 +80,7 @@ export default function MainNet(props: any) {
                         <Loader />
                     }
                     {activationType === 'manual' &&
-                        <Manual setUseExchange={setUseExchange} useExchange={useExchange} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} />
+                        <Manual setUseExchange={setUseExchange} useExchange={useExchange} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} xumm={props.xumm} accountToActivate={props.accountToActivate} />
                     }
                     {activationType === 'tangem' &&
                         <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} canOnOffRamp={canOnOffRamp} />

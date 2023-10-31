@@ -27,6 +27,7 @@ export default function App() {
   const [markdownURL, setMarkdownURL] = useState<string | null>(null);
   const [mainPage, setMainPage] = useState<any>();
   const [jwt, setJwt] = useState<string>();
+  const [accountToActivate, setAccountToActivate] = useState('');
 
   function GetMarkdown(url: any) {
     const { isLoading, error, data } = useQuery('repoData', () =>
@@ -59,16 +60,16 @@ export default function App() {
           "command": "account_info",
           "account": profile?.account,
         })
-        if (accountInfo && accountInfo.account_data) {
-          // Assume that account is found and therefore activated, so don't use xApp
-          setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
-          return;
-        }
+        // if (accountInfo && accountInfo.account_data) {
+        //   // Assume that account is found and therefore activated, so don't use xApp
+        //   setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
+        //   return;
+        // }
 
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
-            setMainPage(<MainNet toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
+            setMainPage(<MainNet accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
             return;
           case 'DEVNET':
           case 'TESTNET':
