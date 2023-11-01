@@ -69,7 +69,7 @@ export default function App() {
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
-            setMainPage(<MainNet accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
+            setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
             return;
           case 'DEVNET':
           case 'TESTNET':
@@ -109,12 +109,3 @@ export default function App() {
     </QueryClientProvider>
   )
 }
-
-/* Todo:
-
-  - Show/hide on/offramp based on eligible
-
-  - Move logic for filling tangem's to MainNet component
-  - Move logic for filling acconuts on test/dev to DevNet component
-
-*/

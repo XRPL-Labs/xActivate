@@ -80,10 +80,10 @@ export default function MainNet(props: any) {
                         <Loader />
                     }
                     {activationType === 'manual' &&
-                        <Manual setUseExchange={setUseExchange} useExchange={useExchange} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} xumm={props.xumm} accountToActivate={props.accountToActivate} />
+                        <Manual nodetype={props.nodetype} setUseExchange={setUseExchange} useExchange={useExchange} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} xumm={props.xumm} accountToActivate={props.accountToActivate} />
                     }
                     {activationType === 'tangem' &&
-                        <Tangem amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} canOnOffRamp={canOnOffRamp} />
+                        <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} canOnOffRamp={canOnOffRamp} />
                     }
                 </Suspense>
             </div>

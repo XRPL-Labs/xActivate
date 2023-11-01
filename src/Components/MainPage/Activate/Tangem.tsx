@@ -8,6 +8,8 @@ export default function Tangem(props: any) {
     const [isActivating, setIsActivating] = useState<boolean>(false);
     const [showError, setShowError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const currency = props.nodetype === 'XAHAU' ? 'XAH' : 'XRP';
+
     async function activateTangemCard(bearer: string) {
 
         const prefillRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}`, {
@@ -43,7 +45,7 @@ export default function Tangem(props: any) {
             {!isActivated && !isActivating &&
                 <>
                     <p className="m-0 text-secondary font-bold mb-4">Congrats! Your Tangem card seems to be eligible to be activated through Xumm.</p>
-                    <p className="m-0 text-secondary">Please click the button below to pre fund your Tangem card with <strong>{props.amount} XRP</strong>.</p>
+                    <p className="m-0 text-secondary">Please click the button below to pre fund your Tangem card with <strong>{props.amount} {currency}</strong>.</p>
                 </>
             }
             {isActivating && !isActivated &&
