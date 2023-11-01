@@ -19,12 +19,7 @@
   const currentUrl = window.location.href;
   const searchParams = new URL(currentUrl).searchParams;
   const xAppStyle = searchParams.get('xAppStyle') || 'light';
-  const xAppStyleURL = `https://xumm.app/assets/themes/xapp/xumm-${xAppStyle.toLowerCase()}/bootstrap.min.css`
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = xAppStyleURL;
-  link.media = 'all';
-  head.appendChild(link);
+
   const body = document.querySelector('body');
   body?.classList.add(xAppStyle.toLowerCase());
 </script>
