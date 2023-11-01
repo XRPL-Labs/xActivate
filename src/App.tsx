@@ -82,6 +82,7 @@ export default function App() {
             return;
         }
       });
+      xumm?.xapp?.ready();
     });
 
   }, []);
