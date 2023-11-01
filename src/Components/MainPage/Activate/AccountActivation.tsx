@@ -5,6 +5,7 @@ import AmountChoice from "../../AmountChoice";
 import { Error as ErrorComponent } from "../../Error";
 import * as Sentry from "@sentry/react";
 import Confetti from "../../Confetti";
+import iconChevronDown from '../../../assets/chevron-down.png'
 
 export default function AccountActivation(props: any) {
     const [chosenAmount, setChosenAmount] = useState<number>(10);
@@ -16,12 +17,14 @@ export default function AccountActivation(props: any) {
     const [nodeWss, setNodeWss] = useState<string>('');
     const [currency, setCurrency] = useState<string>('XRP');
     const [isActivated, setIsActivated] = useState<boolean>(false);
-
+    const [amountSteps, setAmountSteps] = useState<Array<number>>([10, 25, 50, 75, 100, 200])
     useEffect(() => {
         props.xumm.environment.ott.then((data: any) => {
             setNodeWss(data.nodewss);
             if (data.nodetype === 'XAHAU') {
                 setCurrency('XAH');
+                setAmountSteps([1, 10, 15, 50, 75, 100]);
+                setChosenAmount(1);
             }
         });
     }, [])
@@ -157,25 +160,25 @@ export default function AccountActivation(props: any) {
                                 <>
                                     <p className="m-0 text-secondary">Select the account that you want to send the {currency} from.</p>
                                     <span className="text-primary font-bold mt-2">Account</span>
-                                    <div className={`w-full border-2 rounded-[8px] px-3 ${selectedAccount ? "py-2" : "py-3"} text-[rgb(var(--colorGray))] flex items-center`}>
-                                        <button className={`w-full text-left ${selectedAccount ? 'font-mono text-xs' : ''}`} onClick={() => selectAccount()}>{selectedAccount ?
+                                    <div className={`w-full bg-white px-4 py-[16px] mt-2 border border-[rgb(--var(colorSilver))] rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
+                                        {selectedAccount ?
                                             <span className="w-full flex items-center gap-2">
-                                                <img src={`https://xumm.app/avatar/${selectedAccount}_180_50.png`} className="w-10 h-10 m-0 rounded" />
+                                                <img src={`https://xumm.app/avatar/${selectedAccount}_180_50.png`} className="w-8 h-8 m-0 rounded" />
                                                 {selectedAccount}
                                             </span>
-                                            : "Select an account"} </button>
+                                            : "Select an account"}
+                                        <img className="m-0" src={iconChevronDown} />
                                     </div>
                                     {
                                         selectedAccount !== '' && !hasAccountError &&
                                         <>
                                             <span className="text-primary font-bold mt-4">Select amount of XRP to send</span>
                                             <div className="grid grid-cols-3 w-full mt-2 gap-3 pb-36">
-                                                <AmountChoice currency={currency} amount={10} isAvailable={selectedAccountBalance >= 10} isActive={chosenAmount === 10} onClick={() => { setChosenAmount(10) }} />
-                                                <AmountChoice currency={currency} amount={25} isAvailable={selectedAccountBalance >= 25} isActive={chosenAmount === 25} onClick={() => { setChosenAmount(25) }} />
-                                                <AmountChoice currency={currency} amount={50} isAvailable={selectedAccountBalance >= 50} isActive={chosenAmount === 50} onClick={() => { setChosenAmount(50) }} />
-                                                <AmountChoice currency={currency} amount={75} isAvailable={selectedAccountBalance >= 75} isActive={chosenAmount === 75} onClick={() => { setChosenAmount(75) }} />
-                                                <AmountChoice currency={currency} amount={100} isAvailable={selectedAccountBalance >= 100} isActive={chosenAmount === 100} onClick={() => { setChosenAmount(100) }} />
-                                                <AmountChoice currency={currency} amount={200} isAvailable={selectedAccountBalance >= 200} isActive={chosenAmount === 200} onClick={() => { setChosenAmount(200) }} />
+                                                {amountSteps.map((step: number) => {
+                                                    return (
+                                                        <AmountChoice currency={currency} amount={step} isAvailable={selectedAccountBalance >= 10} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
+                                                    )
+                                                })}
                                             </div>
                                             <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                                                 <button onClick={() => { createPayload() }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Activate</button>
