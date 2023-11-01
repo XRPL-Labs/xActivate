@@ -60,11 +60,11 @@ export default function App() {
           "command": "account_info",
           "account": profile?.account,
         })
-        // if (accountInfo && accountInfo.account_data) {
-        //   // Assume that account is found and therefore activated, so don't use xApp
-        //   setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
-        //   return;
-        // }
+        if (accountInfo && accountInfo.account_data) {
+          // Assume that account is found and therefore activated, so don't use xApp
+          setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
+          return;
+        }
 
         switch (profile?.nodetype) {
           case 'MAINNET':
