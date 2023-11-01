@@ -18,6 +18,7 @@ export default function AccountActivation(props: any) {
     const [currency, setCurrency] = useState<string>('XRP');
     const [isActivated, setIsActivated] = useState<boolean>(false);
     const [amountSteps, setAmountSteps] = useState<Array<number>>([10, 25, 50, 75, 100, 200])
+    const [accountReserve, setAccountReserve] = useState<number>(10);
     useEffect(() => {
         props.xumm.environment.ott.then((data: any) => {
             setNodeWss(data.nodewss);
@@ -25,6 +26,7 @@ export default function AccountActivation(props: any) {
                 setCurrency('XAH');
                 setAmountSteps([1, 10, 15, 50, 75, 100]);
                 setChosenAmount(1);
+                setAccountReserve(1);
             }
         });
     }, [])
@@ -49,7 +51,6 @@ export default function AccountActivation(props: any) {
 
                 // Check selected account
                 const accountInfo = await xrplClient.send({ command: 'account_info', account: data.destination.address });
-                fetch(`/__log?${encodeURI(JSON.stringify(accountInfo, null, 4))}`);
                 if ((accountInfo.error || accountInfo.status === 'error') && accountInfo.error === 'actNotFound') {
                     // No account found, so return error
                     setHasAccountError(true);
@@ -69,7 +70,7 @@ export default function AccountActivation(props: any) {
                 accountBalance -= baseReserve;
                 accountBalance -= (baseObjectReserve * accountInfo.account_data.OwnerCount);
 
-                if (accountBalance < 10) {
+                if (accountBalance < accountReserve) {
                     setHasAccountError(true);
                     setAccountError('noFunds');
                     setPageIsLoading(false);
@@ -192,7 +193,7 @@ export default function AccountActivation(props: any) {
                                                 <p className="m-0">You've selected the same account as the one you want to activate. Please choose an other account to send the {currency} from.</p>
                                             }
                                             {accountError === 'noFunds' &&
-                                                <p className="m-0">Looks like there is not enough funding in your account. There needs to be at least 10 {currency} spendable in the account you choose. Please choose an other account.</p>
+                                                <p className="m-0">Looks like there is not enough funding in your account. There needs to be at least {accountReserve} {currency} spendable in the account you choose. Please choose an other account.</p>
                                             }
                                             {accountError === 'general' &&
                                                 <p className="m-0">Looks like something went wrong. Please choose an other account or restart the xApp.</p>

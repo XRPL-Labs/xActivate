@@ -13,6 +13,7 @@ export default function DevNet(props: any) {
     const [showError, setShowError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const currency = props.profile.nodetype === 'XAHAUTESTNET' ? 'XAH' : 'XRP';
+    const accountReserve = props.nodetype === 'XAHAU' ? 1 : 10;
 
     let imageActivateAccount = imageAddAccountDark
     if (props.xAppStyle === 'light') {
@@ -85,7 +86,7 @@ export default function DevNet(props: any) {
                     <img src={imageActivateAccount} className="w-[40%] mx-auto" />
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>
                 </div>
-                <p className="m-0 text-secondary mb-4">An account on the Ledger automatically becomes activated when the first 10 {currency} are sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
+                <p className="m-0 text-secondary mb-4">An account on the Ledger automatically becomes activated when the first {accountReserve} {currency} {accountReserve > 1 ? 'are' : 'is'} sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
                 {isPrefilled && !isPrefilling ?
                     <>
                         <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10 opacity-50">
