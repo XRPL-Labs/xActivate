@@ -177,7 +177,7 @@ export default function AccountActivation(props: any) {
                                             <div className="grid grid-cols-3 w-full mt-2 gap-3 pb-36">
                                                 {amountSteps.map((step: number) => {
                                                     return (
-                                                        <AmountChoice currency={currency} amount={step} isAvailable={selectedAccountBalance >= 10} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
+                                                        <AmountChoice currency={currency} amount={step} isAvailable={selectedAccountBalance >= step} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
                                                     )
                                                 })}
                                             </div>
