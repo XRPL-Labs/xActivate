@@ -177,11 +177,11 @@ export default function AccountActivation(props: any) {
                                             <div className="grid grid-cols-3 w-full mt-2 gap-3 pb-36">
                                                 {amountSteps.map((step: number) => {
                                                     return (
-                                                        <AmountChoice currency={currency} amount={step} isAvailable={selectedAccountBalance >= step} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
+                                                        <AmountChoice key={step} currency={currency} amount={step} isAvailable={selectedAccountBalance >= step} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
                                                     )
                                                 })}
                                             </div>
-                                            <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
+                                            <div className="fixed z-10 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                                                 <button onClick={() => { createPayload() }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Activate</button>
                                             </div>
                                         </>
