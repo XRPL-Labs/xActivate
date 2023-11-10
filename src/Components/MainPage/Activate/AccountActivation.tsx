@@ -6,11 +6,12 @@ import { Error as ErrorComponent } from "../../Error";
 import * as Sentry from "@sentry/react";
 import Confetti from "../../Confetti";
 import iconChevronDown from '../../../assets/chevron-down.png'
+import iconChevronLeft from '../../../assets/chevron-left.png'
 
 export default function AccountActivation(props: any) {
     const [chosenAmount, setChosenAmount] = useState<number>(10);
     const [pageIsLoading, setPageIsLoading] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState<string>('');
+    const [selectedAccount, setSelectedAccount] = useState<string>('rUBvs5SMHzzApSopJQX9GDv9Yrj5atVrKU');
     const [selectedAccountBalance, setSelectedAccountBalance] = useState<number>(0);
     const [hasAccountError, setHasAccountError] = useState<boolean>(false);
     const [accountError, setAccountError] = useState<string>('');
@@ -181,7 +182,8 @@ export default function AccountActivation(props: any) {
                                                     )
                                                 })}
                                             </div>
-                                            <div className="fixed z-10 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
+                                            <div className="fixed z-10 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
+                                                <button onClick={() => { props.setUseAccount(false) }} className="button button--blue text-black py-[16px] rounded-[20px] flex h-[60px] w-fit px-6 items-center justify-center gap-2"><img className="m-0 w-2.5" src={iconChevronLeft} /></button>
                                                 <button onClick={() => { createPayload() }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Activate</button>
                                             </div>
                                         </>

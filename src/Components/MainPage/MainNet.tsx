@@ -67,12 +67,16 @@ export default function MainNet(props: any) {
         } else {
             setActivationType('manual');
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        setShowImage(!useAccount);
+    }, [useAccount])
 
     return (
         <>
             <div className="w-full h-full flex flex-col items-center relative">
-                <div className="w-full flex flex-col items-center mt-12">
+                <div className={`w-full flex flex-col items-center ${!showImage && 'mt-12'}`}>
                     {showImage &&
                         <img src={imageActivateAccount} className="w-[40%] mx-auto" />
                     }
@@ -83,7 +87,7 @@ export default function MainNet(props: any) {
                         <Loader />
                     }
                     {activationType === 'manual' &&
-                        <Manual nodetype={props.nodetype} setUseExchange={setUseExchange} useExchange={useExchange} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} xumm={props.xumm} accountToActivate={props.accountToActivate} />
+                        <Manual nodetype={props.nodetype} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} xumm={props.xumm} accountToActivate={props.accountToActivate} />
                     }
                     {activationType === 'tangem' &&
                         <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} canOnOffRamp={canOnOffRamp} />
