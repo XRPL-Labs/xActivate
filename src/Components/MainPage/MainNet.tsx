@@ -31,6 +31,7 @@ export default function MainNet(props: any) {
     }
     const [activationType, setActivationType] = useState<string>('')
     const [useExchange, setUseExchange] = useState(false);
+    const [showImage, setShowImage] = useState(true);
     const [amount, setAmount] = useState<number>(0);
     const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false);
     const [useAccount, setUseAccount] = useState<boolean>(false);
@@ -72,6 +73,9 @@ export default function MainNet(props: any) {
         <>
             <div className="w-full h-full flex flex-col items-center relative">
                 <div className="w-full flex flex-col items-center mt-12">
+                    {showImage &&
+                        <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                    }
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>
                 </div>
                 <Suspense fallback={<Loader />}>

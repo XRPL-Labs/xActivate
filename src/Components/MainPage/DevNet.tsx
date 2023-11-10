@@ -13,7 +13,7 @@ export default function DevNet(props: any) {
     const [showError, setShowError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const currency = props.profile.nodetype === 'XAHAUTESTNET' ? 'XAH' : 'XRP';
-    const accountReserve = props.nodetype === 'XAHAU' ? 1 : 10;
+    const accountReserve = currency === 'XAH' ? 1 : 10;
 
     let imageActivateAccount = imageAddAccountDark
     if (props.xAppStyle === 'light') {
@@ -92,10 +92,10 @@ export default function DevNet(props: any) {
                         <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10 opacity-50">
                             <Confetti />
                         </div>
-                        <p className="m-0 text-secondary font-bold">Your account has been activated with 1.000 {currency}!</p>
+                        <p className="m-0 text-secondary font-bold">Your account has been activated with {currency === 'XAH' ? '10.000 XAH' : '1.000 XRP'}!</p>
                     </>
                     :
-                    <p className="m-0 font-bold text-[rgb(var(--colorBlue))] w-full bg-[rgba(var(--colorBlue),var(--themeButtonOpacity))] p-[11px] border border-[rgb(var(--colorBlue))] rounded-[15px]">Since you're using "{props.profile.nodetype}", we'll auto activate your account with 1.000 {currency}. Just tap the button on the bottom of the screen.</p>
+                    <p className="m-0 font-bold text-[rgb(var(--colorBlue))] w-full bg-[rgba(var(--colorBlue),var(--themeButtonOpacity))] p-[11px] border border-[rgb(var(--colorBlue))] rounded-[15px]">Since you're using "{props.profile.nodetype}", we'll auto activate your account with {currency === 'XAH' ? '10.000 XAH' : '1.000 XRP'}. Just tap the button on the bottom of the screen.</p>
                 }
                 <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                     <button onClick={

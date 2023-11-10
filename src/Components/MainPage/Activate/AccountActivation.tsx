@@ -161,14 +161,14 @@ export default function AccountActivation(props: any) {
                                 <>
                                     <p className="m-0 text-secondary">Select the account that you want to send the {currency} from.</p>
                                     <span className="text-primary font-bold mt-2">Account</span>
-                                    <div className={`w-full bg-white px-4 py-[16px] mt-2 border border-[rgb(--var(colorSilver))] rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
+                                    <div className={`w-full bg-white px-4 py-[16px] mt-2 font-semibold border ${hasAccountError ? '!border-[rgb(var(--colorRed))] !text-[rgb(var(--colorRed))]' : 'border-[rgb(var(--colorSilver))]'} rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
                                         {selectedAccount ?
-                                            <span className="w-full flex items-center gap-2">
+                                            <span className="w-full flex items-center gap-2 font-normal">
                                                 <img src={`https://xumm.app/avatar/${selectedAccount}_180_50.png`} className="w-8 h-8 m-0 rounded" />
                                                 {selectedAccount}
                                             </span>
                                             : "Select an account"}
-                                        <img className="m-0" src={iconChevronDown} />
+                                        <img className={`m-0 ${hasAccountError ? 'filter-red' : ''}`} src={iconChevronDown} />
                                     </div>
                                     {
                                         selectedAccount !== '' && !hasAccountError &&
