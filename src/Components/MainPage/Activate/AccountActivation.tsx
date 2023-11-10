@@ -173,7 +173,7 @@ export default function AccountActivation(props: any) {
                                     {
                                         selectedAccount !== '' && !hasAccountError &&
                                         <>
-                                            <span className="text-primary font-bold mt-4">Select amount of XRP to send</span>
+                                            <span className="text-primary font-bold mt-4">Select amount of {currency} to send</span>
                                             <div className="grid grid-cols-3 w-full mt-2 gap-3 pb-36">
                                                 {amountSteps.map((step: number) => {
                                                     return (

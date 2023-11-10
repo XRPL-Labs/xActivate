@@ -71,8 +71,7 @@ export default function MainNet(props: any) {
     return (
         <>
             <div className="w-full h-full flex flex-col items-center relative">
-                <div className="w-full flex flex-col items-center">
-                    <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                <div className="w-full flex flex-col items-center mt-12">
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>
                 </div>
                 <Suspense fallback={<Loader />}>
