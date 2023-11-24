@@ -11,7 +11,7 @@ import iconChevronLeft from '../../../assets/chevron-left.png'
 export default function AccountActivation(props: any) {
     const [chosenAmount, setChosenAmount] = useState<number>(10);
     const [pageIsLoading, setPageIsLoading] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState<string>('rUBvs5SMHzzApSopJQX9GDv9Yrj5atVrKU');
+    const [selectedAccount, setSelectedAccount] = useState<string>('');
     const [selectedAccountBalance, setSelectedAccountBalance] = useState<number>(0);
     const [hasAccountError, setHasAccountError] = useState<boolean>(false);
     const [accountError, setAccountError] = useState<string>('');
