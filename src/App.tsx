@@ -39,6 +39,7 @@ export default function App() {
     })
   }, [contentURL])
 
+
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   useEffect(() => {
     let bearerFromSdk: string = '';

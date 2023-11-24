@@ -11,7 +11,8 @@ import iconChevronLeft from '../../../assets/chevron-left.png'
 export default function AccountActivation(props: any) {
     const [chosenAmount, setChosenAmount] = useState<number>(10);
     const [pageIsLoading, setPageIsLoading] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState<string>('');
+    const [selectedAccount, setSelectedAccount] = useState<string>('rUBvs5SMHzzApSopJQX9GDv9Yrj5atVrKU');
+    const [selectedAccountName, setSelectedAccountName] = useState<string>('Tangem 1');
     const [selectedAccountBalance, setSelectedAccountBalance] = useState<number>(0);
     const [hasAccountError, setHasAccountError] = useState<boolean>(false);
     const [accountError, setAccountError] = useState<string>('');
@@ -65,9 +66,11 @@ export default function AccountActivation(props: any) {
                     setPageIsLoading(false);
                     return;
                 }
-
+                setSelectedAccountName(data.destination.name);
+                setSelectedAccount(data.destination.address);
                 // Calculate account balance to check how much XRP/XAH can be send
                 let accountBalance = parseInt(accountInfo.account_data.Balance) / 1000000;
+
                 accountBalance -= baseReserve;
                 accountBalance -= (baseObjectReserve * accountInfo.account_data.OwnerCount);
 
@@ -77,7 +80,6 @@ export default function AccountActivation(props: any) {
                     setPageIsLoading(false);
                     return;
                 }
-                setSelectedAccount(data.destination.address);
                 setSelectedAccountBalance(accountBalance);
             }
             setPageIsLoading(false);
@@ -162,11 +164,14 @@ export default function AccountActivation(props: any) {
                                 <>
                                     <p className="m-0 text-secondary">Select the account that you want to send the {currency} from.</p>
                                     <span className="text-primary font-bold mt-2">Account</span>
-                                    <div className={`w-full bg-white px-4 py-[16px] mt-2 font-semibold border ${hasAccountError ? '!border-[rgb(var(--colorRed))] !text-[rgb(var(--colorRed))]' : 'border-[rgb(var(--colorSilver))]'} rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
+                                    <div className={`w-full bg-theme-tint px-2 py-2 mt-2 font-semibold border ${hasAccountError ? '!border-[rgb(var(--colorRed))] !text-[rgb(var(--colorRed))]' : 'border-transparent'} rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
                                         {selectedAccount ?
                                             <span className="w-full flex items-center gap-2 font-normal">
-                                                <img src={`https://xumm.app/avatar/${selectedAccount}_180_50.png`} className="w-8 h-8 m-0 rounded" />
-                                                {selectedAccount}
+                                                <img src={`https://xumm.app/avatar/${selectedAccount}_180_50.png`} className="w-12 h-12 m-0 rounded-xl" />
+                                                <span className="flex flex-col">
+                                                    <span className="font-sans text-lg font-bold -mb-1">{selectedAccountName}</span>
+                                                    {selectedAccount}
+                                                </span>
                                             </span>
                                             : "Select an account"}
                                         <img className={`m-0 ${hasAccountError ? 'filter-red' : ''}`} src={iconChevronDown} />
