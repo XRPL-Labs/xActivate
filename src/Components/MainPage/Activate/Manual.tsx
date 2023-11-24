@@ -68,7 +68,9 @@ export default function Manual(props: any) {
                     :
                     <div className="flex flex-col">
                         <p className="m-0 text-secondary">An account on the Ledger automatically becomes activated when the first {accountReserve} {currency} {accountReserve > 1 ? 'are' : 'is'} sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
-                        <p className="m-0 text-secondary pb-48">You can use an existing account, <span onClick={() => { props.setUseExchange(true); setUseExchange(true) }} className="w-full underline text-secondary">an exchange</span> or the Xumm Onramp and Offramp xApp (if available) to activate your account on the Ledger. You can read more about account activation <span onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }} className="w-full underline text-secondary">here</span>.</p>
+                        <p className="m-0 text-secondary pb-48">You can use an existing account, <span onClick={() => {
+                            props.setUseExchange(true); setUseExchange(true);
+                        }} className="w-full underline text-secondary">an exchange</span> or the Xumm Onramp and Offramp xApp (if available) to activate your account on the Ledger. You can read more about account activation <span onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }} className="w-full underline text-secondary">here</span>.</p>
                         <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                             {props.canOnOffRamp === true ?
                                 <>
