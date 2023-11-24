@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:digitalocean": "npm install -f && npm run build",
+    "build:digitalocean": "yarn install && yarn run build",
     "preview": "vite preview"
   },
   "dependencies": {
