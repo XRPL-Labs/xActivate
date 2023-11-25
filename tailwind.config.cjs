@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const styles = require("@kevinkoobs/xummstyleplugin")
+const styles = require("xaman-styleplugin")
 
 module.exports = {
   content: [

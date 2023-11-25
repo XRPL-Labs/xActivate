@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@kevinkoobs/xummstyleplugin": "^0.0.4",
+    "xaman-styleplugin": "^0.0.4",
     "@sentry/react": "^7.72.0",
     "@sentry/vite-plugin": "^2.7.1",
     "assert": "^2.0.0",
