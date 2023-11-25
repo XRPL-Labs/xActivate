@@ -11,11 +11,11 @@ import iconChevronLeft from '../../../assets/chevron-left.png'
 export default function AccountActivation(props: any) {
     const [chosenAmount, setChosenAmount] = useState<number>(10);
     const [pageIsLoading, setPageIsLoading] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState<string>(props.accountToActivate);
-    const [selectedAccountName, setSelectedAccountName] = useState<string>('Select source account...');
+    const [selectedAccount, setSelectedAccount] = useState<string>(props.accountToActivate); // Changed by Wietse for temp default
+    const [selectedAccountName, setSelectedAccountName] = useState<string>('Select source account...'); // Changed by Wietse for temp default
     const [selectedAccountBalance, setSelectedAccountBalance] = useState<number>(0);
-    const [hasAccountError, setHasAccountError] = useState<boolean>(false);
-    const [accountError, setAccountError] = useState<string>('');
+    const [hasAccountError, setHasAccountError] = useState<boolean>(true); // Changed by Wietse for temp default - To prevent users being able to continue with default on own account
+    const [accountError, setAccountError] = useState<string>('accountDouble'); // Changed by Wietse for temp default - To prevent users being able to continue with default on own account
     const [nodeWss, setNodeWss] = useState<string>('');
     const [currency, setCurrency] = useState<string>('XRP');
     const [isActivated, setIsActivated] = useState<boolean>(false);
@@ -193,7 +193,7 @@ export default function AccountActivation(props: any) {
                                             </div>
                                         </>
                                     }
-                                    {hasAccountError &&
+                                    {true &&
                                         <span className="p-4 border mt-4 rounded-lg !border-[rgb(var(--colorRed))] bg-red-400/10">
                                             <p className="m-0 text-lg text-primary font-bold">Oh no...</p>
                                             {accountError === 'accountDouble' &&
