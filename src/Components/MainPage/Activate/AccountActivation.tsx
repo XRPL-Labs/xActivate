@@ -200,7 +200,7 @@ export default function AccountActivation(props: any) {
                                                 <p className="m-0">You've selected the same account as the one you want to activate. Please choose an other account to send the {currency} from.</p>
                                             }
                                             {accountError === 'noFunds' &&
-                                                <p className="m-0">Looks like there is not enough funding in your account. There needs to be at least {accountReserve} {currency} spendable in the account you choose. Please choose an other account.</p>
+                                                <p className="m-0">Looks like you do not have enough {currency} in the selected account. There needs to be at least {accountReserve} {currency} spendable in the account you choose. Please choose an other account.</p>
                                             }
                                             {accountError === 'general' &&
                                                 <p className="m-0">Looks like something went wrong. Please choose an other account or restart the xApp.</p>
