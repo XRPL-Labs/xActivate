@@ -39,6 +39,8 @@ export default function AccountActivation(props: any) {
         props.xumm.xapp.on('destination', async (data: any) => {
             if (data.reason === 'SELECTED' && data.destination.address !== undefined) {
                 setHasAccountError(false);
+                setAccountError(''); // Clear error message too
+
                 // Check if selected account !== current account
                 if (props.accountToActivate === data.destination.address) {
                     setHasAccountError(true);
