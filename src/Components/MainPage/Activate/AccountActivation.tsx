@@ -36,6 +36,7 @@ export default function AccountActivation(props: any) {
     function selectAccount() {
         setPageIsLoading(true);
         props.xumm.xapp.selectDestination();
+
         props.xumm.xapp.on('destination', async (data: any) => {
             if (data.reason === 'SELECTED' && data.destination.address !== undefined) {
                 setHasAccountError(false);
@@ -53,6 +54,16 @@ export default function AccountActivation(props: any) {
                 let baseReserve = serverInfo.info.validated_ledger.reserve_base_xrp;
                 let baseObjectReserve = serverInfo.info.validated_ledger.reserve_inc_xrp;
 
+                // Set the selected account anyway, so the potential error
+                // matches the account selected (which can now be seen)
+                // instead of it not updating when this was after the `return`
+                // resulting in possible user confusion about if the account was
+                // selected in the first place, and confusing the error message
+                // as being applicable on the account displayed above (which was the
+                // previous, unupdated account)
+                setSelectedAccountName(data.destination.name);
+                setSelectedAccount(data.destination.address);
+
                 // Check selected account
                 const accountInfo = await xrplClient.send({ command: 'account_info', account: data.destination.address });
                 if ((accountInfo.error || accountInfo.status === 'error') && accountInfo.error === 'actNotFound') {
@@ -68,8 +79,7 @@ export default function AccountActivation(props: any) {
                     setPageIsLoading(false);
                     return;
                 }
-                setSelectedAccountName(data.destination.name);
-                setSelectedAccount(data.destination.address);
+
                 // Calculate account balance to check how much XRP/XAH can be send
                 let accountBalance = parseInt(accountInfo.account_data.Balance) / 1000000;
 
@@ -84,6 +94,7 @@ export default function AccountActivation(props: any) {
                 }
                 setSelectedAccountBalance(accountBalance);
             }
+
             setPageIsLoading(false);
         })
     }
