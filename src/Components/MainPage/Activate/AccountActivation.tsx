@@ -195,7 +195,8 @@ export default function AccountActivation(props: any) {
                                             </div>
                                         </>
                                     }
-                                    {true &&
+                                    {
+                                        hasAccountError && accountError !== '' &&
                                         <span className="p-4 border mt-4 rounded-lg !border-[rgb(var(--colorRed))] bg-red-400/10">
                                             <p className="m-0 text-lg text-primary font-bold">Oh no...</p>
                                             {accountError === 'accountDouble' &&
