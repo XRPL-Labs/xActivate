@@ -24,12 +24,12 @@ export default function Tangem(props: any) {
         if (prefillResult.activated === true) {
             window.setTimeout(() => {
                 setIsActivated(true);
+                setIsActivating(false);
             }, 2000)
         } else {
             Sentry.setContext("ActivateTangemError", {
                 location: 'After prefill request',
                 prefillResult: JSON.stringify(prefillResult, null, 4),
-                userProfile: JSON.stringify(props.profile, null, 4),
                 xAppT: props.xAppToken,
                 endpoint: import.meta.env.VITE_XAPP_TANGEM_ENDPOINT,
                 bearer: bearer
