@@ -52,7 +52,7 @@ export default function App() {
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
         // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
-        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
 
         const [accountInfo, prefillCheck] = await Promise.all([

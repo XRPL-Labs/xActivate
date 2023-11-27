@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import iconChevronDown from '../../../assets/chevron-down.png'
 import iconChevronLeft from '../../../assets/chevron-left.png'
+import iconExternalLink from '../../../assets/external-link.png'
+import iconWallet from '../../../assets/wallet.png'
+import iconCoins from '../../../assets/coins.png'
+import iconExchange from '../../../assets/exchange.png'
 import exchanges from '../../../../exchanges.json'
 import AccountActivation from "./AccountActivation";
+import ActionPrimary from "../Manual/ActionPrimary";
+import ActionSecondary from "../Manual/ActionSecondary";
 
 export default function Manual(props: any) {
 
@@ -11,6 +17,20 @@ export default function Manual(props: any) {
     const [useExchange, setUseExchange] = useState<boolean>(false);
     const currency = props.nodetype === 'XAHAU' ? 'XAH' : 'XRP';
     const accountReserve = props.nodetype === 'XAHAU' ? 1 : 10;
+
+    function openBuySellXApp() {
+        if (typeof (window as any).ReactNativeWebView !== 'undefined') {
+            (window as any).ReactNativeWebView.postMessage(JSON.stringify({
+                command: 'xAppNavigate',
+                xApp: 'xumm.buysellxrp',
+                title: 'XUMM Buy/Sell XRP',
+                extraData: {
+                    ott: props.xAppToken,
+                    origin: 'xActivate'
+                }
+            }))
+        }
+    }
 
     useEffect(() => {
         if (exchange !== '') {
@@ -66,21 +86,14 @@ export default function Manual(props: any) {
                         </div>
                     </>
                     :
-                    <div className="flex flex-col">
-                        <p className="m-0 text-secondary">An account on the Ledger automatically becomes activated when the first {accountReserve} {currency} {accountReserve > 1 ? 'are' : 'is'} sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
-                        <p className="m-0 text-secondary pb-48">You can use an existing account, <span onClick={() => {
-                            props.setUseExchange(true); setUseExchange(true);
-                        }} className="w-full underline text-secondary">an exchange</span> or the Xumm Onramp and Offramp xApp (if available) to activate your account on the Ledger. You can read more about account activation <span onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }} className="w-full underline text-secondary">here</span>.</p>
-                        <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
-                            {props.canOnOffRamp === true ?
-                                <>
-                                    <button onClick={() => { props.setUseAccount(true) }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Use an existing account</button>
-                                    <button onClick={() => openOnOffRampXApp()} className="button bg-transparent text-primary border-2 border-[rgb(var(--colorGrey))] w-full py-[12px] rounded-[20px] text-lg">Use On/Offramp</button>
+                    <div className="flex flex-col gap-2">
+                        <p className="m-0 text-secondary text-center">An account on the {currency} Ledger automatically becomes activated when the first <strong>{accountReserve} {currency}</strong> is sent to it.</p>
+                        <p className="text-center m-0 font-semibold underline flex items-center justify-center gap-2" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }}>More information <span><img className="m-0" src={iconExternalLink} /></span></p>
 
-                                </>
-                                :
-                                <button onClick={() => { props.setUseAccount(true) }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Use an existing account</button>
-                            }
+                        <div className="fixed bottom-0 flex gap-2 flex-col w-full -ml-5 pl-[20px] pr-[22px] pb-6">
+                            <ActionPrimary icon={iconCoins} title="Buy XRP" onClick={() => { openBuySellXApp() }} />
+                            <ActionSecondary icon={iconWallet} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} />
+                            <ActionSecondary icon={iconExchange} title="Fund via Exchange" onClick={() => { props.setUseExchange(true); setUseExchange(true); }} />
                         </div>
                     </div>
             }
