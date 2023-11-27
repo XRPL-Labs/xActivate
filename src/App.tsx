@@ -40,17 +40,19 @@ export default function App() {
     })
   }, [contentURL])
 
+  // fetch(`/__log?${encodeURI(JSON.stringify(import.meta.env.VITE_XAPP_API_KEY, null, 4))}`);
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   useEffect(() => {
     let bearerFromSdk: string = '';
-    xumm.environment.bearer?.then(bearer => {
+    xumm.environment.bearer?.then(async bearer => {
+      // fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
       bearerFromSdk = bearer;
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
-        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
+        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
 
         const [accountInfo, prefillCheck] = await Promise.all([
@@ -58,8 +60,9 @@ export default function App() {
             "command": "account_info",
             "account": profile?.account,
           }),
-          checkIfTangemCardCanBePrefilled(jwt || '', xAppToken),
+          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken),
         ])
+        // fetch(`/__log?${encodeURI(JSON.stringify(prefillCheck, null, 4))}`);
 
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
