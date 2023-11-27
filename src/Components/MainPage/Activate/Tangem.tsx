@@ -24,19 +24,20 @@ export default function Tangem(props: any) {
         if (prefillResult.activated === true) {
             window.setTimeout(() => {
                 setIsActivated(true);
+                setIsActivating(false);
             }, 2000)
         } else {
             Sentry.setContext("ActivateTangemError", {
                 location: 'After prefill request',
                 prefillResult: JSON.stringify(prefillResult, null, 4),
-                userProfile: JSON.stringify(props.profile, null, 4),
                 xAppT: props.xAppToken,
-                endpoint: import.meta.env.VITE_XAPP_TANGEM_ENDPOINT
+                endpoint: import.meta.env.VITE_XAPP_TANGEM_ENDPOINT,
+                bearer: bearer
             })
-            Sentry.captureException(new Error('ActivationTangemError'));
             setShowError(true);
             setIsActivating(false);
             setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+            Sentry.captureException(new Error('ActivationTangemError'));
         }
 
     }
