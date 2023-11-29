@@ -9,6 +9,7 @@ import * as Sentry from "@sentry/react";
 import { XrplClient } from 'xrpl-client';
 import rehypeRaw from 'rehype-raw'
 import { checkIfTangemCardCanBePrefilled } from './Components/MainPage/MainNet';
+import Hurray from './Components/MainPage/Hurray';
 
 const queryClient = new QueryClient()
 
@@ -51,8 +52,7 @@ export default function App() {
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
-        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
 
         const [accountInfo, prefillCheck] = await Promise.all([
@@ -62,11 +62,10 @@ export default function App() {
           }),
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken),
         ])
-        // fetch(`/__log?${encodeURI(JSON.stringify(prefillCheck, null, 4))}`);
-
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
-          setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
+          // setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
+          setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
           return;
         }
 
