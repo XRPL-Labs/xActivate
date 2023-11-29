@@ -177,6 +177,11 @@ export default function AccountActivation(props: any) {
                                     </div>
                                     <p className="m-0 text-secondary font-bold">Your account has succesfully been activated!</p>
                                     <p className="m-0 text-secondary">You can now close the xApp.</p>
+                                    <div className="fixed z-10 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
+                                        <button onClick={
+                                            () => { props.xumm.xapp.close(); }
+                                        } className={`button bg-black text-white w-full py-[16px] rounded-[20px] text-lg flex items-center justify-center gap-2 active:outline-none focus:outline-none`}>Close xApp</button>
+                                    </div>
                                 </>
                                 :
                                 <>
@@ -194,8 +199,7 @@ export default function AccountActivation(props: any) {
                                             : "Select an account"}
                                         <img className={`m-0 ${hasAccountError ? 'filter-red' : ''}`} src={iconChevronDown} />
                                     </div>
-                                    {
-                                        selectedAccount !== '' && !hasAccountError &&
+                                    {selectedAccount !== '' && !hasAccountError &&
                                         <>
                                             <span className="text-primary font-bold mt-4">Select amount of {currency} to send</span>
                                             <div className="grid grid-cols-3 w-full mt-2 gap-3 pb-36">
@@ -205,6 +209,7 @@ export default function AccountActivation(props: any) {
                                                     )
                                                 })}
                                             </div>
+
                                             <div className="fixed z-10 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                                                 <button onClick={() => { props.setUseAccount(false) }} className="button button--blue text-black py-[16px] rounded-[20px] flex h-[60px] w-fit px-6 items-center justify-center gap-2"><img className="m-0 w-2.5" src={iconChevronLeft} /></button>
                                                 <button onClick={() => { createPayload() }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Activate</button>

@@ -65,7 +65,6 @@ export default function App() {
         ])
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
-          // setMainPage(<ErrorComponent title="Hurray!" text="This account is already activated. You can close the xApp and enjoy your Xumm account!" xumm={xumm} hideTicket={true} />)
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
           return;
         }
