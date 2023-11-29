@@ -46,6 +46,7 @@ export default function App() {
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   useEffect(() => {
     let bearerFromSdk: string = '';
+    setMainPage(<Loader />)
     xumm.environment.bearer?.then(async bearer => {
       // fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
       bearerFromSdk = bearer;
@@ -80,8 +81,6 @@ export default function App() {
           case 'CUSTOM':
             const railsData = await (await fetch('https://xumm.app/api/v1/platform/rails')).json();
             let networkName = railsData[profile.nodetype].name;
-            console.log({ networkName });
-
             setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} networkName={networkName} />);
             return;
           default:
