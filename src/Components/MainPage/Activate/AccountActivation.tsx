@@ -31,6 +31,9 @@ export default function AccountActivation(props: any) {
                 setAccountReserve(1);
             }
         });
+        if (selectedAccount === props.accountToActivate) {
+            selectAccount();
+        }
     }, [])
 
     function selectAccount() {
@@ -151,6 +154,8 @@ export default function AccountActivation(props: any) {
                     // Show confetti when done :)
                     setPageIsLoading(false);
                     setIsActivated(true);
+                } else {
+                    setPageIsLoading(false);
                 }
             })
         })
