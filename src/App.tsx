@@ -46,13 +46,14 @@ export default function App() {
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   useEffect(() => {
     let bearerFromSdk: string = '';
+    setMainPage(<Loader />)
     xumm.environment.bearer?.then(async bearer => {
       // fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
       bearerFromSdk = bearer;
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
 
         const [accountInfo, prefillCheck] = await Promise.all([
@@ -72,13 +73,15 @@ export default function App() {
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
-            setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} />);
+            setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
             return;
           case 'DEVNET':
           case 'TESTNET':
           case 'XAHAUTESTNET':
           case 'CUSTOM':
-            setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} />);
+            const railsData = await (await fetch('https://xumm.app/api/v1/platform/rails')).json();
+            let networkName = railsData[profile.nodetype].name;
+            setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} networkName={networkName} />);
             return;
           default:
             setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
@@ -89,6 +92,10 @@ export default function App() {
     });
 
   }, []);
+
+  function test() {
+    setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
+  }
 
   function toggleMarkdownURL(url: string) {
     setContentURL(url)

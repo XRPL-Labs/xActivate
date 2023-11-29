@@ -33,38 +33,14 @@ export default function MainNet(props: any) {
     const [useExchange, setUseExchange] = useState(false);
     const [showImage, setShowImage] = useState(true);
     const [amount, setAmount] = useState<number>(0);
-    const [canOnOffRamp, setCanOnOffRamp] = useState<boolean>(false);
     const [useAccount, setUseAccount] = useState<boolean>(false);
 
     useEffect(() => {
-        const userXAppsRequest = fetch('https://xumm.app/api/v1/jwt/xapp/shortlist?featured=1', {
-            headers: {
-                'Authorization': `Bearer ${props.bearer}`,
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => response.json()).then(userXApps => {
-            if (userXApps.featured) {
-                userXApps.featured.map((flag: any) => {
-                    if (flag.identifier === 'xumm.onofframp') {
-                        setCanOnOffRamp(true);
-                    }
-                })
-            }
-        })
-
-        if (props.profile.accounttype === 'TANGEM') {
-            (async () => {
-                const prefillCheck = await checkIfTangemCardCanBePrefilled(props.bearer, props.xAppToken)
-                fetch(`/__log?${encodeURI(JSON.stringify(prefillCheck, null, 4))}`)
-                if (prefillCheck) {
-                    // TODO: What if XAHAU?
-                    setAmount(parseFloat(prefillCheck.amount.xrp.total));
-                    // setAmount(parseFloat('100'));
-                    setActivationType('tangem');
-                } else {
-                    setActivationType('manual');
-                }
-            })()
+        if (props.profile.accounttype === 'TANGEM' && props.prefillCheck) {
+            // TODO: What if XAHAU?
+            setAmount(parseFloat(props.prefillCheck.amount.xrp.total));
+            // setAmount(parseFloat('100'));
+            setActivationType('tangem');
         } else {
             setActivationType('manual');
         }
@@ -88,10 +64,10 @@ export default function MainNet(props: any) {
                         <Loader />
                     }
                     {activationType === 'manual' &&
-                        <Manual useExchange={useExchange} setUseExchange={setUseExchange} nodetype={props.nodetype} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} canOnOffRamp={canOnOffRamp} xumm={props.xumm} accountToActivate={props.accountToActivate} />
+                        <Manual useExchange={useExchange} setUseExchange={setUseExchange} nodetype={props.nodetype} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} xumm={props.xumm} accountToActivate={props.accountToActivate} />
                     }
                     {activationType === 'tangem' &&
-                        <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} canOnOffRamp={canOnOffRamp} />
+                        <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} />
                     }
                 </Suspense>
             </div>
