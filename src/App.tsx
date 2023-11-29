@@ -52,7 +52,7 @@ export default function App() {
       setJwt(bearer);
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        // fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
 
         const [accountInfo, prefillCheck] = await Promise.all([
@@ -89,6 +89,10 @@ export default function App() {
     });
 
   }, []);
+
+  function test() {
+    setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
+  }
 
   function toggleMarkdownURL(url: string) {
     setContentURL(url)

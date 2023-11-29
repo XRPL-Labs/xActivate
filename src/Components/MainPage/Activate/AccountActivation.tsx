@@ -5,8 +5,8 @@ import AmountChoice from "../../AmountChoice";
 import { Error as ErrorComponent } from "../../Error";
 import * as Sentry from "@sentry/react";
 import Confetti from "../../Confetti";
-import iconChevronDown from '../../../assets/chevron-down.png'
-import iconChevronLeft from '../../../assets/chevron-left.png'
+import iconChevronDown from '../../../assets/chevron-down.png';
+import iconChevronLeft from '../../../assets/chevron-left.png';
 
 export default function AccountActivation(props: any) {
     const [chosenAmount, setChosenAmount] = useState<number>(10);
