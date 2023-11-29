@@ -78,7 +78,11 @@ export default function App() {
           case 'TESTNET':
           case 'XAHAUTESTNET':
           case 'CUSTOM':
-            setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} />);
+            const railsData = await (await fetch('https://xumm.app/api/v1/platform/rails')).json();
+            let networkName = railsData[profile.nodetype].name;
+            console.log({ networkName });
+
+            setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} networkName={networkName} />);
             return;
           default:
             setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
