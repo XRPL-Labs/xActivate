@@ -54,6 +54,7 @@ export default function App() {
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
+        fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
 
         const [accountInfo, prefillCheck] = await Promise.all([
@@ -78,8 +79,13 @@ export default function App() {
           case 'TESTNET':
           case 'XAHAUTESTNET':
           case 'CUSTOM':
-            const railsData = await (await fetch('https://xumm.app/api/v1/platform/rails')).json();
-            let networkName = railsData[profile.nodetype].name;
+            let networkName = 'XRPL Testnet';
+            try {
+              const railsData = await (await fetch('https://xumm.app/api/v1/platform/rails')).json();
+              networkName = railsData[profile.nodetype].name;
+            } catch (e) {
+              Sentry.captureException(e);
+            }
             setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} networkName={networkName} />);
             return;
           default:
