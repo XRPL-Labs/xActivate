@@ -64,7 +64,7 @@ export default function MainNet(props: any) {
                         <Loader />
                     }
                     {activationType === 'manual' &&
-                        <Manual useExchange={useExchange} setUseExchange={setUseExchange} nodetype={props.nodetype} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} xumm={props.xumm} accountToActivate={props.accountToActivate} />
+                        <Manual useExchange={useExchange} setUseExchange={setUseExchange} nodetype={props.nodetype} nodewss={props.profile.nodewss} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} xumm={props.xumm} accountToActivate={props.accountToActivate} />
                     }
                     {activationType === 'tangem' &&
                         <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} />

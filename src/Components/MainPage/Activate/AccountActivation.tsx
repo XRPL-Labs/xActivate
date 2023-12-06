@@ -16,7 +16,7 @@ export default function AccountActivation(props: any) {
     const [selectedAccountBalance, setSelectedAccountBalance] = useState<number>(0);
     const [hasAccountError, setHasAccountError] = useState<boolean>(true); // Changed by Wietse for temp default - To prevent users being able to continue with default on own account
     const [accountError, setAccountError] = useState<string>('accountDouble'); // Changed by Wietse for temp default - To prevent users being able to continue with default on own account
-    const [nodeWss, setNodeWss] = useState<string>('');
+    const [nodeWss, setNodeWss] = useState<string>(props.nodewss);
     const [currency, setCurrency] = useState<string>('XRP');
     const [isActivated, setIsActivated] = useState<boolean>(false);
     const [amountSteps, setAmountSteps] = useState<Array<number>>([10, 25, 50, 75, 100, 200])
@@ -69,6 +69,8 @@ export default function AccountActivation(props: any) {
 
                 // Check selected account
                 const accountInfo = await xrplClient.send({ command: 'account_info', account: data.destination.address });
+                fetch(`/__log?${encodeURI(JSON.stringify(accountInfo, null, 4))}`);
+                fetch(`/__log?${encodeURI(JSON.stringify(serverInfo, null, 4))}`);
                 if ((accountInfo.error || accountInfo.status === 'error') && accountInfo.error === 'actNotFound') {
                     // No account found, so return error
                     setHasAccountError(true);
