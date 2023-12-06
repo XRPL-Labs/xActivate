@@ -79,7 +79,7 @@ export default function App() {
           case 'TESTNET':
           case 'XAHAUTESTNET':
           case 'CUSTOM':
-            let networkName = 'XRPL Testnet';
+            let networkName = `${profile?.nodetype.includes('XAHAU') ? 'XAHAU' : 'XRPL'} Testnet`;
             try {
               const railsData = await (await fetch('https://xumm.app/api/v1/platform/rails')).json();
               networkName = railsData[profile.nodetype].name;
