@@ -8,8 +8,6 @@ const Manual = lazy(() => import('./Activate/Manual'));
 const Tangem = lazy(() => import('./Activate/Tangem'));
 
 export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string) {
-    console.log(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`);
-
     let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
         method: "GET",
         headers: {
@@ -19,7 +17,6 @@ export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken:
     })
 
     let eligibleResult = await check.json();
-    console.log({ eligibleResult });
 
     if (eligibleResult && eligibleResult.eligible) {
         return eligibleResult;

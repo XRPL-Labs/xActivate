@@ -56,12 +56,28 @@ export default function App() {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
+        try {
+          XRPLClient.send({
+            "command": "account_info",
+            "account": profile?.account,
+          })
+        } catch (e) {
+          console.log({ e });
+
+          Sentry.captureException(e);
+        }
+        try {
+          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
+        } catch (error) {
+          console.log({ error });
+          Sentry.captureException(error);
+        }
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
             "command": "account_info",
             "account": profile?.account,
           }),
-          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken),
+          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
         console.log({ accountInfo, prefillCheck });
 
