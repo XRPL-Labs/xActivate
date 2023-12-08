@@ -60,8 +60,18 @@ export default function App() {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         console.log(profile?.nodewss);
+        let XRPLClient = null
+        try {
+          XRPLClient = new XrplClient(profile?.nodewss, { maxConnectionAttempts: 4 });
+        } catch (e) {
+          console.log(e);
 
-        const XRPLClient = new XrplClient(profile?.nodewss);
+        }
+        if (XRPLClient === null) {
+          setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);;
+          xumm?.xapp?.ready();
+          return;
+        }
         console.log(XRPLClient);
 
         const [accountInfo, prefillCheck] = await Promise.all([
@@ -85,6 +95,7 @@ export default function App() {
           case 'MAINNET':
           case 'XAHAU':
             setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
+            xumm?.xapp?.ready();
             return;
           case 'DEVNET':
           case 'TESTNET':
@@ -98,12 +109,13 @@ export default function App() {
               Sentry.captureException(e);
             }
             setMainPage(<DevNet xAppStyle={xAppStyle} profile={profile} bearer={bearerFromSdk} xAppToken={xAppToken} xumm={xumm} networkName={networkName} />);
+            xumm?.xapp?.ready();
             return;
           default:
             setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
+            xumm?.xapp?.ready();
             return;
         }
-        xumm?.xapp?.ready();
       });
     });
 
