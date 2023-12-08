@@ -60,14 +60,18 @@ export default function App() {
           XRPLClient.send({
             "command": "account_info",
             "account": profile?.account,
-          })
+          });
+          console.log('bla');
+
         } catch (e) {
           console.log({ e });
 
           Sentry.captureException(e);
         }
         try {
-          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
+          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken);
+          console.log('try');
+
         } catch (error) {
           console.log({ error });
           Sentry.captureException(error);
