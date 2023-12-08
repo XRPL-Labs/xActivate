@@ -53,6 +53,7 @@ export default function Manual(props: any) {
         }
     }
 
+    console.log('Test3', { props });
 
 
     return (

@@ -71,6 +71,8 @@ export default function App() {
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
+            console.log('Test1');
+
             setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
             return;
           case 'DEVNET':
