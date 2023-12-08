@@ -56,26 +56,6 @@ export default function App() {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
-        try {
-          XRPLClient.send({
-            "command": "account_info",
-            "account": profile?.account,
-          });
-          console.log('bla');
-
-        } catch (e) {
-          console.log({ e });
-
-          Sentry.captureException(e);
-        }
-        try {
-          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken);
-          console.log('try');
-
-        } catch (error) {
-          console.log({ error });
-          Sentry.captureException(error);
-        }
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
             "command": "account_info",
@@ -83,7 +63,6 @@ export default function App() {
           }),
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
-        console.log({ accountInfo, prefillCheck });
 
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp

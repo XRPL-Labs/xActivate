@@ -60,7 +60,7 @@ export default function MainNet(props: any) {
                     }
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>
                 </div>
-                <Suspense fallback={<Loader />}>
+                <Suspense>
                     {activationType === '' &&
                         <Loader />
                     }
