@@ -67,10 +67,14 @@ export default function App() {
           }),
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
-        
+
+        console.log('effect4');
+
+
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
+          xumm?.xapp?.ready();
           return;
         }
         switch (profile?.nodetype) {
@@ -95,8 +99,8 @@ export default function App() {
             setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
             return;
         }
+        xumm?.xapp?.ready();
       });
-      xumm?.xapp?.ready();
     });
 
   }, []);
