@@ -64,7 +64,6 @@ export default function App() {
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
 
-        fetch(`/__log?${encodeURI(String(profile?.nodetype))}`);
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)

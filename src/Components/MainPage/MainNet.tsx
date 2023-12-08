@@ -37,6 +37,8 @@ export default function MainNet(props: any) {
     const [useAccount, setUseAccount] = useState<boolean>(false);
 
     useEffect(() => {
+        console.log('bla');
+
         if (props.profile.accounttype === 'TANGEM' && props.prefillCheck) {
             // TODO: What if XAHAU?
             setAmount(parseFloat(props.prefillCheck.amount.xrp.total));
