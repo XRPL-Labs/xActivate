@@ -48,15 +48,23 @@ export default function App() {
     let bearerFromSdk: string = '';
     setMainPage(<Loader />)
     xumm.environment.bearer?.then(async bearer => {
-      // fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
+      fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
       bearerFromSdk = bearer;
       setJwt(bearer);
+      Sentry.setContext("xAppStartData", {
+        xAppT: xAppToken,
+      })
+      Sentry.captureException(new Error('xAppStartData'));
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
-
+        Sentry.setContext("xAppProfileData", {
+          xAppT: xAppToken,
+          profile: profile
+        })
+        Sentry.captureException(new Error('xAppProfileData'));
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
             "command": "account_info",
@@ -69,7 +77,6 @@ export default function App() {
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
           return;
         }
-
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
