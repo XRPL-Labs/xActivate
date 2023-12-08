@@ -8,20 +8,22 @@ const Manual = lazy(() => import('./Activate/Manual'));
 const Tangem = lazy(() => import('./Activate/Tangem'));
 
 export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string) {
-    let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
-        method: "GET",
-        headers: {
-            'Authorization': `Bearer ${bearer}`,
-            'Content-Type': 'application/json',
+    return new Promise(async (resolve, reject) => {
+        let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${bearer}`,
+                'Content-Type': 'application/json',
+            }
+        })
+
+        let eligibleResult = await check.json();
+
+        if (eligibleResult && eligibleResult.eligible) {
+            resolve(eligibleResult);
         }
+        resolve(false);
     })
-
-    let eligibleResult = await check.json();
-
-    if (eligibleResult && eligibleResult.eligible) {
-        return eligibleResult;
-    }
-    return false;
 }
 
 export default function MainNet(props: any) {

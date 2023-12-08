@@ -45,14 +45,18 @@ export default function App() {
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   useEffect(() => {
+    console.log('effect1');
+
     let bearerFromSdk: string = '';
     setMainPage(<Loader />)
     xumm.environment.bearer?.then(async bearer => {
       fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
       bearerFromSdk = bearer;
       setJwt(bearer);
+
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
+        console.log('effect3');
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
@@ -63,7 +67,7 @@ export default function App() {
           }),
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
-
+        
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
