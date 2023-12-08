@@ -55,6 +55,7 @@ export default function App() {
       xumm.environment.ott?.then(async profile => {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
+        fetch(`/__log?${encodeURI(String(profile?.nodetype))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
@@ -69,7 +70,6 @@ export default function App() {
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
           return;
         }
-        fetch(`/__log?${encodeURI(String(profile?.nodetype))}`);
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
