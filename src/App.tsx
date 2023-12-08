@@ -56,11 +56,6 @@ export default function App() {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
-        XRPLClient.send({
-          "command": "account_info",
-          "account": profile?.account,
-        })
-        fetch(`/__log?${encodeURI(String(profile?.nodetype))}`);
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
             "command": "account_info",
@@ -69,6 +64,7 @@ export default function App() {
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
 
+        fetch(`/__log?${encodeURI(String(profile?.nodetype))}`);
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
