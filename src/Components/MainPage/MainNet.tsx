@@ -1,7 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import imageAddAccount from '../../assets/image-add-account.png'
-import imageAddAccountDark from '../../assets/image-add-account-dark.png';
-import * as Sentry from "@sentry/react";
+import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 
 
 const Loader = lazy(() => import('./Loader'));
@@ -37,24 +36,12 @@ export default function MainNet(props: any) {
     const [useAccount, setUseAccount] = useState<boolean>(false);
 
     useEffect(() => {
-        Sentry.setContext("xAppMainNet", {
-            props: props
-        })
-        Sentry.captureException(new Error('xAppMainNet'));
         if (props.profile.accounttype === 'TANGEM' && props.prefillCheck) {
             // TODO: What if XAHAU?
             setAmount(parseFloat(props.prefillCheck.amount.xrp.total));
             // setAmount(parseFloat('100'));
-            Sentry.setContext("xAppTangem", {
-                props: props
-            })
-            Sentry.captureException(new Error('xAppTangem'));
             setActivationType('tangem');
         } else {
-            Sentry.setContext("xAppManual", {
-                props: props
-            })
-            Sentry.captureException(new Error('xAppManual'));
             setActivationType('manual');
         }
     }, []);
