@@ -48,6 +48,11 @@ export default function MainNet(props: any) {
     }, []);
 
     useEffect(() => {
+        console.log({ activationType });
+
+    }, [activationType])
+
+    useEffect(() => {
         setShowImage(!useAccount);
     }, [useAccount])
 
