@@ -42,8 +42,6 @@ export default function MainNet(props: any) {
             // setAmount(parseFloat('100'));
             setActivationType('tangem');
         } else {
-            console.log('Test2');
-            
             setActivationType('manual');
         }
     }, []);

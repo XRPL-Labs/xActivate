@@ -63,6 +63,8 @@ export default function App() {
           }),
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken),
         ])
+        console.log({ accountInfo, prefillCheck });
+
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
           setMainPage(<Hurray xumm={xumm} xAppStyle={xAppStyle} />)
@@ -71,8 +73,6 @@ export default function App() {
         switch (profile?.nodetype) {
           case 'MAINNET':
           case 'XAHAU':
-            console.log('Test1');
-
             setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
             return;
           case 'DEVNET':
