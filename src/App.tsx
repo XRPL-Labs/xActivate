@@ -59,7 +59,11 @@ export default function App() {
         console.log('effect3');
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
+        console.log(profile?.nodewss);
+
         const XRPLClient = new XrplClient(profile?.nodewss);
+        console.log(XRPLClient);
+
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
             "command": "account_info",
