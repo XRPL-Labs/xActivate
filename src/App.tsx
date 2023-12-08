@@ -56,7 +56,10 @@ export default function App() {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         const XRPLClient = new XrplClient(profile?.nodewss);
-        checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken);
+        XRPLClient.send({
+          "command": "account_info",
+          "account": profile?.account,
+        })
         fetch(`/__log?${encodeURI(String(profile?.nodetype))}`);
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
