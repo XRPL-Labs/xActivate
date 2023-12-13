@@ -89,7 +89,7 @@ export default function Manual(props: any) {
                         <p className="m-0 text-secondary text-center">An account on the {currency} Ledger automatically becomes activated when the first <strong>{accountReserve} {currency}</strong> is sent to it.</p>
                         <p className="text-center m-0 font-semibold underline flex items-center justify-center gap-2" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }}>More information <span><img className="m-0" src={iconExternalLink} /></span></p>
 
-                        <div className="fixed bottom-0 flex gap-2 flex-col w-full -ml-5 pl-[20px] pr-[22px] pb-8">
+                        <div className="fixed bottom-0 flex gap-2 flex-col w-full -ml-5 pl-[20px] pr-[22px] pb-8 z-10 bg-white">
                             {props.nodetype === 'XAHAU' ?
                                 <>
                                     <ActionPrimary icon={iconWalletWhite} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} /></>
