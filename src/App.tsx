@@ -45,8 +45,6 @@ export default function App() {
 
   const xumm = new Xumm(import.meta.env.VITE_XAPP_API_KEY);
   useEffect(() => {
-    console.log('effect1');
-
     let bearerFromSdk: string = '';
     setMainPage(<Loader />)
     xumm.environment.bearer?.then(async bearer => {
@@ -56,7 +54,6 @@ export default function App() {
 
     }).then(() => {
       xumm.environment.ott?.then(async profile => {
-        console.log('effect3');
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         console.log(profile?.nodewss);
@@ -72,7 +69,6 @@ export default function App() {
           xumm?.xapp?.ready();
           return;
         }
-        console.log(XRPLClient);
 
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
@@ -81,9 +77,6 @@ export default function App() {
           }),
           checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
         ])
-
-        console.log('effect4');
-
 
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
           // Assume that account is found and therefore activated, so don't use xApp
