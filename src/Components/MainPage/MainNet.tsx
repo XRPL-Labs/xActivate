@@ -60,7 +60,7 @@ export default function MainNet(props: any) {
 
     return (
         <>
-            <div className="w-full h-full flex flex-col items-center relative">
+            <div className="w-full h-full flex flex-col items-center relative overflow-y-scroll" style={{ maxHeight: "calc(100vh - 268px)" }}>
                 <div className={`w-full flex flex-col items-center ${!showImage && 'mt-12'}`}>
                     {showImage &&
                         <img src={imageActivateAccount} className="w-[40%] mx-auto" />
