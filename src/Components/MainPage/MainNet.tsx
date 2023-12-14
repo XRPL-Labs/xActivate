@@ -35,6 +35,7 @@ export default function MainNet(props: any) {
     const [showImage, setShowImage] = useState(true);
     const [amount, setAmount] = useState<number>(0);
     const [useAccount, setUseAccount] = useState<boolean>(false);
+    const [heightStyle, setHeightStyle] = useState<any>({ maxHeight: 'auto' })
 
     useEffect(() => {
         console.log('bla');
@@ -50,35 +51,44 @@ export default function MainNet(props: any) {
     }, []);
 
     useEffect(() => {
-        console.log({ activationType });
+        console.log('useExchange', useExchange);
 
-    }, [activationType])
+        if (useExchange) {
+            setHeightStyle({ maxHeight: 'auto' });
+        } else {
+            setHeightStyle({ maxHeight: 'calc(100vh - 250px)' })
+            // setHeightStyle({ maxHeight: calc('100vh - 252px') })
+        }
+    }, [useExchange])
+
+    useEffect(() => {
+        console.log(heightStyle);
+
+    }, [heightStyle])
 
     useEffect(() => {
         setShowImage(!useAccount);
     }, [useAccount])
 
     return (
-        <>
-            <div className="w-full h-full flex flex-col items-center relative overflow-y-scroll pb-4" style={{ maxHeight: "calc(100vh - 252px)" }}>
-                <div className={`w-full flex flex-col items-center ${!showImage && 'mt-12'}`}>
-                    {showImage &&
-                        <img src={imageActivateAccount} className="w-[40%] mx-auto" />
-                    }
-                    <h1 className="text-center text-2xl text-primary">Activate your account</h1>
-                </div>
-                <Suspense>
-                    {activationType === '' &&
-                        <Loader />
-                    }
-                    {activationType === 'manual' &&
-                        <Manual useExchange={useExchange} setUseExchange={setUseExchange} nodetype={props.nodetype} nodewss={props.profile.nodewss} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} xumm={props.xumm} accountToActivate={props.accountToActivate} style={props.xAppStyle} />
-                    }
-                    {activationType === 'tangem' &&
-                        <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} />
-                    }
-                </Suspense>
+        <div className={`w-full h-full flex flex-col items-center relative overflow-y-scroll pb-4 ${useExchange ? 'hmax-auto' : 'hmax-scroll'}`}>
+            <div className={`w-full flex flex-col items-center ${!showImage && 'mt-12'}`}>
+                {showImage &&
+                    <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                }
+                <h1 className="text-center text-2xl text-primary">Activate your account</h1>
             </div>
-        </>
+            <Suspense>
+                {activationType === '' &&
+                    <Loader />
+                }
+                {activationType === 'manual' &&
+                    <Manual useExchange={useExchange} setUseExchange={setUseExchange} nodetype={props.nodetype} nodewss={props.profile.nodewss} setShowImage={setShowImage} setUseAccount={setUseAccount} useAccount={useAccount} xAppToken={props.xAppToken} toggleMarkdownURL={props.toggleMarkdownURL} xumm={props.xumm} accountToActivate={props.accountToActivate} style={props.xAppStyle} />
+                }
+                {activationType === 'tangem' &&
+                    <Tangem nodetype={props.nodetype} amount={amount} bearer={props.bearer} xAppToken={props.xAppToken} xumm={props.xumm} />
+                }
+            </Suspense>
+        </div>
     )
 };

@@ -154,9 +154,9 @@ export default function App() {
           {contentURL !== '' ?
             <div id="overlayContent">
               {/* @ts-ignore */}
-              <ReactMarkdown className='pb-24 pt-8' linkTarget="_blank" rehypePlugins={[rehypeRaw]} transformImageUri={transformImageUri}>{content}</ReactMarkdown>
-              <div className="fixed left-0 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px]">
-                <button onClick={() => setContentURL('')} className="button button--blue text-black w-full py-[16px] rounded-[20px] flex items-center justify-center gap-2"><img className="m-0" src={iconChevronLeft} /><p className="m-0">Back</p></button>
+              <ReactMarkdown className='pb-24 pt-8 prose' linkTarget="_blank" rehypePlugins={[rehypeRaw]} transformImageUri={transformImageUri}>{content}</ReactMarkdown>
+              <div className={`fixed left-0 max-h-[195px] ${xAppStyle === 'light' ? 'bg-theme-tint' : 'bg-[rgb(var(--themeColorBackgroundPrimary))]'} w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px]`}>
+                <button onClick={() => setContentURL('')} className="button button--blue w-full py-[16px] rounded-[20px] flex items-center justify-center gap-2"><img className={`m-0 ${xAppStyle !== 'light' ? 'filter-white' : ''}`} src={iconChevronLeft} /><p className="m-0 text-primary ">Back</p></button>
               </div>
             </div>
             :
