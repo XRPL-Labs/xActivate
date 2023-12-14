@@ -70,8 +70,11 @@ export default function MainNet(props: any) {
         setShowImage(!useAccount);
     }, [useAccount])
 
+    console.log(props.nodetype);
+
+
     return (
-        <div className={`w-full h-full flex flex-col items-center relative overflow-y-scroll pb-4 ${useExchange ? 'hmax-auto' : 'hmax-scroll'}`}>
+        <div className={`w-full h-full flex flex-col items-center relative overflow-y-scroll pb-4 ${useExchange || (!useExchange && props.nodetype.includes('XAHAU')) ? 'hmax-auto' : 'hmax-scroll'}`}>
             <div className={`w-full flex flex-col items-center ${!showImage && 'mt-12'}`}>
                 {showImage &&
                     <img src={imageActivateAccount} className="w-[40%] mx-auto" />
