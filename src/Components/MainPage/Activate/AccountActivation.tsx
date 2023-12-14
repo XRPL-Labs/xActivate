@@ -189,17 +189,17 @@ export default function AccountActivation(props: any) {
                                 <>
                                     <p className="m-0 text-secondary">Select the account that you want to send the {currency} from.</p>
                                     <span className="text-primary font-bold mt-2">Account</span>
-                                    <div className={`w-full bg-theme-tint px-2 py-2 mt-2 font-semibold border ${hasAccountError ? '!border-[rgb(var(--colorRed))] !text-[rgb(var(--colorRed))]' : 'border-transparent'} rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
+                                    <div className={`w-full  px-2 py-2 mt-2 font-semibold border ${hasAccountError ? '!border-[rgb(var(--colorRed))] !text-[rgb(var(--colorRed))] !bg-red-400/10' : 'border-transparent bg-theme-tint'} rounded-xl flex justify-between items-center relative text-left ${selectedAccount ? 'font-mono text-[11px]' : ''}`} onClick={() => selectAccount()}>
                                         {selectedAccount ?
                                             <span className="w-full flex items-center gap-2 font-normal">
                                                 <img src={`https://xumm.app/avatar/${selectedAccount}_180_50.png`} className="w-12 h-12 m-0 rounded-xl" />
-                                                <span className="flex flex-col">
-                                                    <span className="font-sans text-lg font-bold -mb-1">{selectedAccountName}</span>
+                                                <span className="flex flex-col text-secondary">
+                                                    <span className="font-sans text-lg font-bold -mb-1 text-primary">{selectedAccountName}</span>
                                                     {selectedAccount}
                                                 </span>
                                             </span>
                                             : "Select an account"}
-                                        <img className={`m-0 ${hasAccountError ? 'filter-red' : ''}`} src={iconChevronDown} />
+                                        <img className={`m-0 ${hasAccountError ? 'filter-red' : props.style !== 'light' ? 'filter-white' : ''}`} src={iconChevronDown} />
                                     </div>
                                     {selectedAccount !== '' && !hasAccountError &&
                                         <>
@@ -207,13 +207,13 @@ export default function AccountActivation(props: any) {
                                             <div className="grid grid-cols-3 w-full mt-2 gap-3 pb-36">
                                                 {amountSteps.map((step: number) => {
                                                     return (
-                                                        <AmountChoice key={step} currency={currency} amount={step} isAvailable={selectedAccountBalance >= step} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
+                                                        <AmountChoice xAppStyle={props.style} key={step} currency={currency} amount={step} isAvailable={selectedAccountBalance >= step} isActive={chosenAmount === step} onClick={() => { setChosenAmount(step) }} />
                                                     )
                                                 })}
                                             </div>
 
                                             <div className="fixed z-10 max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
-                                                <button onClick={() => { props.setUseAccount(false) }} className="button button--blue text-black py-[16px] rounded-[20px] flex h-[60px] w-fit px-6 items-center justify-center gap-2"><img className="m-0 w-2.5" src={iconChevronLeft} /></button>
+                                                <button onClick={() => { props.setUseAccount(false) }} className="button button--blue text-primary py-[16px] rounded-[20px] flex h-[60px] w-fit px-6 items-center justify-center gap-2"><img className={`m-0 w-2.5 ${props.style !== 'light' ? 'filter-white opacity-70' : ''}`} src={iconChevronLeft} /></button>
                                                 <button onClick={() => { createPayload() }} className="button bg-[rgb(var(--colorBlue))] text-white w-full py-[16px] rounded-[20px] text-lg">Activate</button>
                                             </div>
                                         </>
@@ -223,13 +223,13 @@ export default function AccountActivation(props: any) {
                                         <span className="p-4 border mt-4 rounded-lg !border-[rgb(var(--colorRed))] bg-red-400/10">
                                             <p className="m-0 text-lg text-primary font-bold">Oh no...</p>
                                             {accountError === 'accountDouble' &&
-                                                <p className="m-0">You've selected the same account as the one you want to activate. Please choose an other account to send the {currency} from.</p>
+                                                <p className="m-0 text-secondary">You've selected the same account as the one you want to activate. Please choose an other account to send the {currency} from.</p>
                                             }
                                             {accountError === 'noFunds' &&
-                                                <p className="m-0">Looks like you do not have enough {currency} in the selected account. There needs to be at least {accountReserve} {currency} spendable in the account you choose. Please choose an other account.</p>
+                                                <p className="m-0 text-secondary">Looks like you do not have enough {currency} in the selected account. There needs to be at least {accountReserve} {currency} spendable in the account you choose. Please choose an other account.</p>
                                             }
                                             {accountError === 'general' &&
-                                                <p className="m-0">Looks like something went wrong. Please choose an other account or restart the xApp.</p>
+                                                <p className="m-0 text-secondary">Looks like something went wrong. Please choose an other account or restart the xApp.</p>
                                             }
                                         </span>
                                     }

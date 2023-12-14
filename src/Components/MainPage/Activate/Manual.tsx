@@ -90,7 +90,7 @@ export default function Manual(props: any) {
                 :
                 props.useAccount === true ?
                     <>
-                        <AccountActivation xumm={props.xumm} nodewss={props.nodewss} accountToActivate={props.accountToActivate} setUseAccount={props.setUseAccount} />
+                        <AccountActivation style={props.xAppStyle} xumm={props.xumm} nodewss={props.nodewss} accountToActivate={props.accountToActivate} setUseAccount={props.setUseAccount} />
                         <div className="fixed max-h-[195px] bg-theme-tint w-full bottom-0 border-t-[1px] border-t-[#EBECEE] flex items-center flex-col gap-4 pt-[22px] pb-[30px] pl-[20px] pr-[20px] left-0">
                             <button onClick={() => { props.setUseAccount(false); setUseExchange(false) }} className="button button--blue text-black w-full py-[16px] rounded-[20px] flex items-center justify-center gap-2"><img className="m-0" src={iconChevronLeft} /><p className="m-0">Back</p></button>
                         </div>
