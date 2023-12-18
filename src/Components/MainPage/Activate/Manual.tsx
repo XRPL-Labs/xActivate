@@ -98,7 +98,11 @@ export default function Manual(props: any) {
                     :
                     <div className="flex flex-col gap-2">
                         <p className="m-0 text-secondary text-center">An account on the {currency} Ledger automatically becomes activated when the first <strong className="text-primary">{accountReserve} {currency}</strong> is sent to it.</p>
-                        <p className="text-center m-0 -mt-1 font-semibold underline flex items-center justify-center gap-2 text-primary" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }}>More information <span><img className="m-0" src={externalLinkIcon} /></span></p>
+                        {
+                            currency.toUpperCase() === 'XRP'
+                                ? <p className="text-center m-0 -mt-1 font-semibold underline flex items-center justify-center gap-2 text-primary" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }}>More information <span><img className="m-0" src={externalLinkIcon} /></span></p>
+                                : <p className="text-center m-0 -mt-1 font-semibold underline flex items-center justify-center gap-2 text-primary" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started-with-xumm/activating-an-account-xahau/README.md') }}>More information <span><img className="m-0" src={externalLinkIcon} /></span></p>
+                        }
 
                         <div className="fixed bottom-0 w-full -ml-5 pl-[20px] pr-[22px] pb-8 z-10 bg-transparent">
                             <div className="w-full from-[rgb(var(--themeColorBackgroundPrimary))] to-transparent bg-gradient-to-t h-6"></div>
