@@ -12,7 +12,7 @@ export default function Tangem(props: any) {
 
     async function activateTangemCard(bearer: string) {
 
-        const prefillRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}`, {
+        const prefillRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/network:${props.nodetype.toLowerCase()}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${bearer}`,

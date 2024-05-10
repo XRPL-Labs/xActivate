@@ -35,7 +35,7 @@ export default function Manual(props: any) {
             (window as any).ReactNativeWebView.postMessage(JSON.stringify({
                 command: 'xAppNavigate',
                 xApp: 'xumm.buysellxrp',
-                title: 'XUMM Buy/Sell XRP',
+                title: 'Xaman Buy/Sell XRP',
                 extraData: {
                     ott: props.xAppToken,
                     origin: 'xActivate'
@@ -55,7 +55,7 @@ export default function Manual(props: any) {
             (window as any).ReactNativeWebView.postMessage(JSON.stringify({
                 command: 'xAppNavigate',
                 xApp: 'xumm.onofframp',
-                title: 'XUMM OnOfframp',
+                title: 'Xaman OnOfframp',
                 extraData: {
                     ott: props.xAppToken,
                     origin: 'xActivate'
