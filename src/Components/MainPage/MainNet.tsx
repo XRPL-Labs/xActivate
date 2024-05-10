@@ -41,7 +41,13 @@ export default function MainNet(props: any) {
     useEffect(() => {
         if (props.profile.accounttype === 'TANGEM' && props.prefillCheck) {
             // TODO: What if XAHAU?
-            setAmount(parseFloat(props.prefillCheck.amount.xrp.total));
+            if (props.prefillCheck.amount.xrp) {
+                setAmount(parseFloat(props.prefillCheck.amount.xrp.total));
+            } else if (props.prefillCheck.amount.xah) {
+                setAmount(parseFloat(props.prefillCheck.amount.xah.total));
+            } else {
+                setAmount(0);
+            }
             // setAmount(parseFloat('100'));
             setActivationType('tangem');
         } else {
