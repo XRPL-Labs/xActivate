@@ -7,9 +7,9 @@ const Loader = lazy(() => import('./Loader'));
 const Manual = lazy(() => import('./Activate/Manual'));
 const Tangem = lazy(() => import('./Activate/Tangem'));
 
-export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string) {
+export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string, nodetype: string) {
     return new Promise(async (resolve, reject) => {
-        let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
+        let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/network:${nodetype.toLowerCase()}`, {
             method: "GET",
             headers: {
                 'Authorization': `Bearer ${bearer}`,

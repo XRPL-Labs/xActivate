@@ -53,7 +53,7 @@ export default function App() {
       setJwt(bearer);
 
     }).then(() => {
-      xumm.environment.ott?.then(async profile => {
+      xumm.environment.ott?.then(async (profile: any) => {
         fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
         console.log(profile?.nodewss);
@@ -75,7 +75,7 @@ export default function App() {
             "command": "account_info",
             "account": profile?.account,
           }),
-          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken)
+          checkIfTangemCardCanBePrefilled(bearerFromSdk, xAppToken, profile?.nodetype || '')
         ])
 
         if (accountInfo && accountInfo.account_data && !prefillCheck) {
