@@ -48,21 +48,17 @@ export default function App() {
     let bearerFromSdk: string = '';
     setMainPage(<Loader />)
     xumm.environment.bearer?.then(async bearer => {
-      fetch(`/__log?${encodeURI(JSON.stringify(await xumm.environment.ott, null, 4))}`);
       bearerFromSdk = bearer;
       setJwt(bearer);
 
     }).then(() => {
       xumm.environment.ott?.then(async (profile: any) => {
-        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
-        console.log(profile?.nodewss);
         let XRPLClient = null
         try {
           XRPLClient = new XrplClient(profile?.nodewss, { maxConnectionAttempts: 4 });
         } catch (e) {
           console.log(e);
-
         }
         if (XRPLClient === null) {
           setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);;

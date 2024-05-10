@@ -9,14 +9,16 @@ const Tangem = lazy(() => import('./Activate/Tangem'));
 
 export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken: string, nodetype: string) {
     return new Promise(async (resolve, reject) => {
-        let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/network:${nodetype.toLowerCase()}`, {
+        let check = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}`, {
             method: "GET",
             headers: {
                 'Authorization': `Bearer ${bearer}`,
                 'Content-Type': 'application/json',
+                'x-network': nodetype.toLowerCase()
             }
         })
         let eligibleResult = await check.json();
+        console.log({ eligibleResult })
         if (eligibleResult && eligibleResult.eligible) {
             resolve(eligibleResult);
         }
@@ -38,8 +40,6 @@ export default function MainNet(props: any) {
     const [heightStyle, setHeightStyle] = useState<any>({ maxHeight: 'auto' })
 
     useEffect(() => {
-        console.log('bla');
-
         if (props.profile.accounttype === 'TANGEM' && props.prefillCheck) {
             // TODO: What if XAHAU?
             setAmount(parseFloat(props.prefillCheck.amount.xrp.total));
@@ -51,8 +51,6 @@ export default function MainNet(props: any) {
     }, []);
 
     useEffect(() => {
-        console.log('useExchange', useExchange);
-
         if (useExchange) {
             setHeightStyle({ maxHeight: 'auto' });
         } else {
@@ -62,16 +60,8 @@ export default function MainNet(props: any) {
     }, [useExchange])
 
     useEffect(() => {
-        console.log(heightStyle);
-
-    }, [heightStyle])
-
-    useEffect(() => {
         setShowImage(!useAccount);
     }, [useAccount])
-
-    console.log(props.nodetype);
-
 
     return (
         <div className={`w-full h-full flex flex-col items-center relative overflow-y-scroll pb-4 ${useExchange || (!useExchange && props.nodetype.includes('XAHAU')) ? 'hmax-auto' : 'hmax-scroll'}`}>
