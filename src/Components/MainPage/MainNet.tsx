@@ -14,7 +14,6 @@ export async function checkIfTangemCardCanBePrefilled(bearer: string, xAppToken:
             headers: {
                 'Authorization': `Bearer ${bearer}`,
                 'Content-Type': 'application/json',
-                'x-network': nodetype.toLowerCase()
             }
         })
         let eligibleResult = await check.json();
