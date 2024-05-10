@@ -31,7 +31,9 @@ export default function DevNet(props: any) {
             }
         });
 
+
         const activationResponse = await activationRequest.json();
+        fetch(`/__log?${encodeURI(JSON.stringify(activationResponse, null, 4))}`)
         if (activationResponse.error) {
             Sentry.setContext("ActivationError", {
                 location: 'After activation call',
@@ -50,6 +52,38 @@ export default function DevNet(props: any) {
 
         }
 
+        // const directActivationRequest = await fetch('https://faucet.altnet.rippletest.net/accounts', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Cache-Control': 'no-cache',
+        //     },
+        //     body: JSON.stringify({
+        //         destination: props.profile.rAddress,
+        //         xrpAmount: 1010,
+        //         userAgent: 'ripple sucks'
+        //     })
+        // })
+
+        // const directActivationResponse = await directActivationRequest.json();
+        // fetch(`/__log?${encodeURI(JSON.stringify(directActivationResponse, null, 4))}`)
+        // if (directActivationResponse.error) {
+        //     Sentry.setContext("ActivationError", {
+        //         location: 'After activation call',
+        //         directActivationResponse: JSON.stringify(directActivationResponse, null, 4),
+        //         userProfile: JSON.stringify(props.profile, null, 4),
+        //         xAppT: props.xAppToken,
+        //         endpoint: `${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/auto`
+        //     })
+        //     Sentry.captureException(new Error('ActivationError'));
+        //     setShowError(true);
+        //     setIsPrefilling(false);
+        //     setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+
+        //     fetch(`/__log?${encodeURI(JSON.stringify(await directActivationResponse, null, 4))}`)
+        //     return false;
+
+        // }
 
         const XRPLClient = new XrplClient(props.profile.nodewss);
         await XRPLClient.send({
@@ -57,10 +91,8 @@ export default function DevNet(props: any) {
             "account": props.profile.account,
         }).then(response => {
             fetch(`/__log?${encodeURI(JSON.stringify(response, null, 4))}`)
-            if (response && response.account_data.Balance > 10000) {
-                setIsPrefilling(false);
-                setIsPrefilled(true);
-            } else if (response && response.status === 'error') {
+            fetch(`/__log?${encodeURI(JSON.stringify(props.profile.nodewss, null, 4))}`)
+            if (response && response.status === 'error') {
                 Sentry.setContext("ActivatedAccountFetchError", {
                     location: 'After account_info call',
                     accountInfoResponse: JSON.stringify(response, null, 4),
@@ -72,6 +104,9 @@ export default function DevNet(props: any) {
                 setShowError(true);
                 setIsPrefilling(false);
                 setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+            } else if (response && response.account_data && response.account_data.Balance > 10000) {
+                setIsPrefilling(false);
+                setIsPrefilled(true);
             }
         });
     }
