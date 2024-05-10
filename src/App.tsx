@@ -105,7 +105,7 @@ export default function App() {
             xumm?.xapp?.ready();
             return;
           default:
-            setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);
+            setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xaman Support." />);
             xumm?.xapp?.ready();
             return;
         }

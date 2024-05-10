@@ -45,7 +45,7 @@ export default function DevNet(props: any) {
             Sentry.captureException(new Error('ActivationError'));
             setShowError(true);
             setIsPrefilling(false);
-            setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+            setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xaman Support.")
 
             fetch(`/__log?${encodeURI(JSON.stringify(await activationResponse, null, 4))}`)
             return false;
@@ -78,7 +78,7 @@ export default function DevNet(props: any) {
         //     Sentry.captureException(new Error('ActivationError'));
         //     setShowError(true);
         //     setIsPrefilling(false);
-        //     setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+        //     setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xaman Support.")
 
         //     fetch(`/__log?${encodeURI(JSON.stringify(await directActivationResponse, null, 4))}`)
         //     return false;
@@ -103,7 +103,7 @@ export default function DevNet(props: any) {
                 Sentry.captureException(new Error('ActivationError'));
                 setShowError(true);
                 setIsPrefilling(false);
-                setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xumm Support.")
+                setErrorMessage("Something went wrong during the activation of your account. Please retry after reopening the xApp or send in a support ticket via Xaman Support.")
             } else if (response && response.account_data && response.account_data.Balance > 10000) {
                 setIsPrefilling(false);
                 setIsPrefilled(true);
