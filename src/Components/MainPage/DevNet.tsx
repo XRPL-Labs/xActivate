@@ -1,4 +1,4 @@
-import { useState } from "react"
+10import { useState } from "react"
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 import { XrplClient } from "xrpl-client"
@@ -127,7 +127,7 @@ export default function DevNet(props: any) {
                         <div className="fixed flex items-center left-0 right-0 bottom-0 -top-80 justify-center -z-10 opacity-50">
                             <Confetti />
                         </div>
-                        <p className="m-0 text-secondary font-bold">Your account has been activated with {currency === 'XAH' ? '10.000 XAH' : '1.000 XRP'}!</p>
+                        <p className="m-0 text-secondary font-bold">Your account has been activated with 1000 {currency === 'XAH' ? 'XAH' : 'XRP'}!</p>
                     </>
                     :
                     <p className="m-0 font-bold text-[rgb(var(--colorBlue))] w-full bg-[rgba(var(--colorBlue),var(--themeButtonOpacity))] p-[11px] border border-[rgb(var(--colorBlue))] rounded-[15px]">Since you're using "{props.networkName}", we'll auto activate your account with {currency === 'XAH' ? '10.000 XAH' : '1.000 XRP'}. Just tap the button on the bottom of the screen.</p>
