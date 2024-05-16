@@ -1,4 +1,4 @@
-10import { useState } from "react"
+import { useState } from "react"
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 import { XrplClient } from "xrpl-client"
