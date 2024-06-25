@@ -114,9 +114,9 @@ export default function Manual(props: any) {
                             <div className="bg-[rgb(var(--themeColorBackgroundPrimary))] flex gap-2 flex-col w-full">
                                 {props.nodetype === 'XAHAU'
                                     ?   <>
-                                            <ActionPrimary icon={iconExternalLinkWhite} title="Buy XAH" onClick={() => { openXApp('c14.onramp', 'Buy XAH with C14') }} xAppStyle={props.xAppStyle} />
+                                            <ActionPrimary icon={iconCoins} title="Buy XAH" onClick={() => { openXApp('c14.onramp', 'Buy XAH with C14') }} xAppStyle={props.xAppStyle} />
                                             <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
-                                            <ActionSecondary icon={iconCoins} title="Activate with XRP Ledger account" onClick={() => { openXApp('nixer.xahauimport', 'XRPL » Xahau import') }} xAppStyle={props.xAppStyle} />
+                                            <ActionSecondary icon={externalLinkIcon} title="Activate with XRPL account" onClick={() => { openXApp('nixer.xahauimport', 'XRPL » Xahau import') }} xAppStyle={props.xAppStyle} />
                                         </>
                                     :   <>
                                             <ActionPrimary icon={iconCoins} title="Buy XRP" onClick={() => { openBuySellXApp() }} xAppStyle={props.xAppStyle} />
