@@ -24,7 +24,8 @@ export default function Manual(props: any) {
     let exchangeIcon = iconExchangeWhite;
     let walletIcon = iconWalletWhite;
     let externalLinkIcon = iconExternalLinkWhite;
-    if (props.style === 'light') {
+
+    if (props.xAppStyle === 'light') {
         exchangeIcon = iconExchange;
         walletIcon = iconWallet;
         externalLinkIcon = iconExternalLink;
