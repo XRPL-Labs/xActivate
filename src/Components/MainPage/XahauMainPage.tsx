@@ -36,8 +36,6 @@ export default function XahauMainPage(props: any) {
     useEffect(() => {
         if (isActivating) {
             async function activation() {
-                setIsActivated(true);
-                setIsActivating(false);
                 const activationAttempt = await fundXahauAccount(props.xAppToken);
                 if (activationAttempt === true) {
                     setIsActivated(true);
