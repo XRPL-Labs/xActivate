@@ -16,6 +16,7 @@ const queryClient = new QueryClient()
 const MainNet = lazy(() => import('./Components/MainPage/MainNet'));
 const DevNet = lazy(() => import('./Components/MainPage/DevNet'));
 const Loader = lazy(() => import('./Components/MainPage/Loader'));
+const XahauMainPage = lazy(() => import('./Components/MainPage/XahauMainPage'));
 
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
@@ -53,7 +54,7 @@ export default function App() {
 
     }).then(() => {
       xumm.environment.ott?.then(async (profile: any) => {
-        fetch(`/__log?${encodeURI(JSON.stringify(profile, null, 4))}`);
+        fetch(`/__log?${encodeURI(JSON.stringify(xAppToken, null, 4))}`);
         let XRPLClient = null
         try {
           XRPLClient = new XrplClient(profile?.nodewss, { maxConnectionAttempts: 4 });
@@ -61,7 +62,7 @@ export default function App() {
           console.log(e);
         }
         if (XRPLClient === null) {
-          setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xumm Support." />);;
+          setMainPage(<ErrorComponent xumm={xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xaman Support." />);
           xumm?.xapp?.ready();
           return;
         }
@@ -80,11 +81,15 @@ export default function App() {
           xumm?.xapp?.ready();
           return;
         }
+        console.log(profile?.nodetype);
+
         switch (profile?.nodetype) {
           case 'MAINNET':
-          case 'XAHAU':
             setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
             xumm?.xapp?.ready();
+            return;
+          case 'XAHAU':
+            setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} />)
             return;
           case 'DEVNET':
           case 'TESTNET':
