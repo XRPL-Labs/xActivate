@@ -11,8 +11,7 @@ async function fundXahauAccount(xAppToken: string, bearer: string): Promise<bool
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${bearer}`,
-            'mode': 'no-cors'
+            'Authorization': `Bearer ${bearer}`
         }
     });
     const isActivated = await activationRequest.json();
