@@ -6,12 +6,12 @@ import { Error as ErrorComponent } from '../Error';
 
 const Loader = lazy(() => import('./Loader'));
 
-async function fundXahauAccount(props: any): Promise<boolean | any> {
-    const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/direct`, {
+async function fundXahauAccount({ xAppToken, bearer }: { xAppToken: string, bearer: string }): Promise<boolean | any> {
+    const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/direct`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${props.bearer}`,
+            'Authorization': `Bearer ${bearer}`,
             'mode': 'no-cors'
         }
     });
@@ -38,7 +38,7 @@ export default function XahauMainPage(props: any) {
     useEffect(() => {
         if (isActivating) {
             async function activation() {
-                const activationAttempt = await fundXahauAccount(props.xAppToken);
+                const activationAttempt = await fundXahauAccount(props.xAppToken, props.bearer);
                 if (activationAttempt === true) {
                     setIsActivated(true);
                 } else {
