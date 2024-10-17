@@ -10,7 +10,7 @@ const Loader = lazy(() => import('./Loader'));
 
 async function fundXahauAccount(xAppToken: string, bearer: string, profile: any): Promise<boolean | any> {
     const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/direct`, {
-        method: "POST",
+        method: "GET",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${bearer}`
