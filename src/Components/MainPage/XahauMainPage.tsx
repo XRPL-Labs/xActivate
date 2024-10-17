@@ -11,6 +11,7 @@ async function fundXahauAccount(xAppToken: string): Promise<boolean | any> {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
+            'mode': 'no-cors'
         }
     });
     const isActivated = await activationRequest.json();
