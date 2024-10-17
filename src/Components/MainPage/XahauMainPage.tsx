@@ -15,6 +15,7 @@ async function fundXahauAccount(xAppToken: string, bearer: string): Promise<bool
         }
     });
     const isActivated = await activationRequest.json();
+    console.log(isActivated);
     if (isActivated.accepted === true) {
         return true;
     } else {
