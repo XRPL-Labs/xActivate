@@ -21,6 +21,7 @@ const XahauMainPage = lazy(() => import('./Components/MainPage/XahauMainPage'));
 const searchParams = new URL(window.location.href).searchParams;
 const xAppToken = searchParams.get('xAppToken') || '';
 const xAppStyle = searchParams.get('xAppStyle')?.toLowerCase();
+const redirected = searchParams.get('redirect') || false;
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_URL,
@@ -89,7 +90,11 @@ export default function App() {
             xumm?.xapp?.ready();
             return;
           case 'XAHAU':
-            setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} bearer={bearerFromSdk} profile={profile} />)
+            if (!redirected) {
+              setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} bearer={bearerFromSdk} profile={profile} />)
+            } else {
+              setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
+            }
             return;
           case 'DEVNET':
           case 'TESTNET':

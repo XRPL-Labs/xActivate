@@ -4,6 +4,7 @@ import imageAddAccountDark from '../../assets/image-add-account-dark.png';
 import Confetti from "../Confetti";
 import { Error as ErrorComponent } from '../Error';
 import * as Sentry from "@sentry/react";
+import Notice from "../Notice";
 
 
 const Loader = lazy(() => import('./Loader'));
@@ -21,15 +22,19 @@ async function fundXahauAccount(xAppToken: string, bearer: string, profile: any)
     if (isActivated.accepted === true) {
         return true;
     } else {
-        Sentry.setContext("ActivationError", {
-            location: 'After activation call',
-            activationResponse: JSON.stringify(isActivated, null, 4),
-            userProfile: JSON.stringify(profile, null, 4),
-            xAppT: xAppToken,
-            endpoint: `${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/auto`
-        })
-        Sentry.captureException(new Error('ActivationError'));
-        fetch(`/__log?${encodeURI(JSON.stringify(await isActivated, null, 4))}`)
+        // Note; User can auto activate only once per device
+        if (isActivated.msg !== 'OTT from device already activated') {
+            Sentry.setContext("ActivationError", {
+                location: 'After activation call',
+                activationResponse: JSON.stringify(isActivated, null, 4),
+                userProfile: JSON.stringify(profile, null, 4),
+                xAppT: xAppToken,
+                endpoint: `${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/direct`
+            })
+            Sentry.captureException(new Error('ActivationError'));
+            fetch(`/__log?${encodeURI(JSON.stringify(await isActivated, null, 4))}`)
+        }
+
 
         return isActivated;
     }
@@ -45,18 +50,27 @@ export default function XahauMainPage(props: any) {
     const [isActivating, setIsActivating] = useState<boolean>(true);
     const [isActivated, setIsActivated] = useState<boolean>(false);
     const [hasError, setHasError] = useState<boolean>(false);
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [notice, setNotice] = useState<string | null>(null);
 
     useEffect(() => {
         if (isActivating) {
             async function activation() {
                 const activationAttempt = await fundXahauAccount(props.xAppToken, props.bearer, props.profile);
+                console.log(activationAttempt);
+
                 if (activationAttempt === true) {
                     setIsActivated(true);
                 } else {
                     setIsActivated(false);
                     setHasError(true);
-                    setError(activationAttempt.error);
+                    if (activationAttempt.msg === 'OTT from device already activated') {
+                        console.log('test');
+
+                        setNotice('You can pre-activate on account per device. You\'ve already activated another account, so please activate your new account the old-fashioned way.');
+                    } else {
+                        setError('Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xaman Support.')
+                    }
                 }
                 setIsActivating(false);
             }
@@ -92,8 +106,11 @@ export default function XahauMainPage(props: any) {
                         </div>
                     </>
                 }
-                {!isActivated && hasError && !isActivating &&
-                    <ErrorComponent xumm={props.xumm} text="Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xaman Support." />
+                {!isActivated && hasError && !isActivating && error &&
+                    <ErrorComponent xumm={props.xumm} text={error} />
+                }
+                {!isActivated && hasError && !isActivating && notice &&
+                    <Notice text={notice} />
                 }
 
             </Suspense>
