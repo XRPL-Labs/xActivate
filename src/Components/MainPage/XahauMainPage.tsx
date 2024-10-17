@@ -10,12 +10,11 @@ async function fundXahauAccount(xAppToken: string, bearer: string): Promise<bool
     const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/direct`, {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${bearer}`
+            'Content-Type': 'application/json'
         }
     });
     const isActivated = await activationRequest.json();
-    console.log(isActivated);
+    console.log({ isActivated, xAppToken, bearer });
     if (isActivated.accepted === true) {
         return true;
     } else {
