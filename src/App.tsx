@@ -89,7 +89,7 @@ export default function App() {
             xumm?.xapp?.ready();
             return;
           case 'XAHAU':
-            setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} />)
+            setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} bearer={bearerFromSdk} />)
             return;
           case 'DEVNET':
           case 'TESTNET':

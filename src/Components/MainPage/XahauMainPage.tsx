@@ -6,11 +6,12 @@ import { Error as ErrorComponent } from '../Error';
 
 const Loader = lazy(() => import('./Loader'));
 
-async function fundXahauAccount(xAppToken: string): Promise<boolean | any> {
-    const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/direct`, {
+async function fundXahauAccount(props: any): Promise<boolean | any> {
+    const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${props.xAppToken}/direct`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${props.bearer}`,
             'mode': 'no-cors'
         }
     });
