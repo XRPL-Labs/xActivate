@@ -3,10 +3,12 @@ import imageAddAccount from '../../assets/image-add-account.png';
 import imageAddAccountDark from '../../assets/image-add-account-dark.png';
 import Confetti from "../Confetti";
 import { Error as ErrorComponent } from '../Error';
+import * as Sentry from "@sentry/react";
+
 
 const Loader = lazy(() => import('./Loader'));
 
-async function fundXahauAccount(xAppToken: string, bearer: string): Promise<boolean | any> {
+async function fundXahauAccount(xAppToken: string, bearer: string, profile: any): Promise<boolean | any> {
     const activationRequest = await fetch(`${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/direct`, {
         method: "POST",
         headers: {
@@ -19,6 +21,16 @@ async function fundXahauAccount(xAppToken: string, bearer: string): Promise<bool
     if (isActivated.accepted === true) {
         return true;
     } else {
+        Sentry.setContext("ActivationError", {
+            location: 'After activation call',
+            activationResponse: JSON.stringify(isActivated, null, 4),
+            userProfile: JSON.stringify(profile, null, 4),
+            xAppT: xAppToken,
+            endpoint: `${import.meta.env.VITE_XAPP_TANGEM_ENDPOINT}${xAppToken}/auto`
+        })
+        Sentry.captureException(new Error('ActivationError'));
+        fetch(`/__log?${encodeURI(JSON.stringify(await isActivated, null, 4))}`)
+
         return isActivated;
     }
 }
@@ -38,7 +50,7 @@ export default function XahauMainPage(props: any) {
     useEffect(() => {
         if (isActivating) {
             async function activation() {
-                const activationAttempt = await fundXahauAccount(props.xAppToken, props.bearer);
+                const activationAttempt = await fundXahauAccount(props.xAppToken, props.bearer, props.profile);
                 if (activationAttempt === true) {
                     setIsActivated(true);
                 } else {
