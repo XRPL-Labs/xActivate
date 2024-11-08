@@ -65,8 +65,6 @@ export default function XahauMainPage(props: any) {
                     setIsActivated(false);
                     setHasError(true);
                     if (activationAttempt.msg === 'OTT from device already activated') {
-                        console.log('test');
-
                         setNotice('You can pre-activate one account per device. You\'ve already activated another account, so please activate your new account the old-fashioned way.');
                     } else {
                         setError('Something went wrong. Please re-open the xApp and if this error keeps occurring, please send in a ticket via Xaman Support.')

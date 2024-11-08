@@ -90,8 +90,8 @@ export default function App() {
             xumm?.xapp?.ready();
             return;
           case 'XAHAU':
-            if (!redirected) {
-              setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} bearer={bearerFromSdk} profile={profile} />)
+            if (!redirected && accountInfo && !accountInfo.account_data) {
+              setMainPage(<XahauMainPage xAppToken={xAppToken} xumm={xumm} bearer={bearerFromSdk} profile={profile} prefillCheck={prefillCheck} />)
             } else {
               setMainPage(<MainNet nodetype={profile.nodetype} accountToActivate={profile?.account} toggleMarkdownURL={toggleMarkdownURL} xAppStyle={xAppStyle} profile={profile} xAppToken={xAppToken} bearer={bearerFromSdk} xumm={xumm} prefillCheck={prefillCheck} />);
             }
