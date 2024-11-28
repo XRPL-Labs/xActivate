@@ -105,7 +105,7 @@ export default function Manual(props: any) {
                         <p className="m-0 text-secondary text-center">An account on the {currency} Ledger automatically becomes activated when the first <strong className="text-primary">{accountReserve} {currency}</strong> is sent to it.</p>
                         {
                             currency.toUpperCase() === 'XRP'
-                                ? <p className="text-center m-0 -mt-1 font-semibold underline flex items-center justify-center gap-2 text-primary" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started/how-to-activate-a-new-xrpl-account.md') }}>More information <span><img className="m-0" src={externalLinkIcon} /></span></p>
+                                ? <p className="text-center m-0 -mt-1 font-semibold underline flex items-center justify-center gap-2 text-primary" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started-with-xaman/how-to-activate-a-new-xrpl-account/README.md') }}>More information <span><img className="m-0" src={externalLinkIcon} /></span></p>
                                 : <p className="text-center m-0 -mt-1 font-semibold underline flex items-center justify-center gap-2 text-primary" onClick={() => { props.toggleMarkdownURL('https://raw.githubusercontent.com/XRPL-Labs/Help-Center/main/getting-started-with-xumm/activating-a-xahau-account/README.md') }}>More information <span><img className="m-0" src={externalLinkIcon} /></span></p>
                         }
 
@@ -113,16 +113,16 @@ export default function Manual(props: any) {
                             <div className="w-full from-[rgb(var(--themeColorBackgroundPrimary))] to-transparent bg-gradient-to-t h-6"></div>
                             <div className="bg-[rgb(var(--themeColorBackgroundPrimary))] flex gap-2 flex-col w-full">
                                 {props.nodetype === 'XAHAU'
-                                    ?   <>
-                                            <ActionPrimary icon={iconCoins} title="Buy XAH" onClick={() => { openXApp('c14.onramp', 'Buy XAH with C14') }} xAppStyle={props.xAppStyle} />
-                                            <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
-                                            <ActionSecondary icon={externalLinkIcon} title="Activate with XRPL account" onClick={() => { openXApp('nixer.xahauimport', 'XRPL » Xahau import') }} xAppStyle={props.xAppStyle} />
-                                        </>
-                                    :   <>
-                                            <ActionPrimary icon={iconCoins} title="Buy XRP" onClick={() => { openBuySellXApp() }} xAppStyle={props.xAppStyle} />
-                                            <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
-                                            <ActionSecondary icon={exchangeIcon} title="Fund via Exchange" onClick={() => { props.setUseExchange(true); setUseExchange(true); }} xAppStyle={props.xAppStyle} />
-                                        </>
+                                    ? <>
+                                        <ActionPrimary icon={iconCoins} title="Buy XAH" onClick={() => { openXApp('c14.onramp', 'Buy XAH with C14') }} xAppStyle={props.xAppStyle} />
+                                        <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
+                                        <ActionSecondary icon={externalLinkIcon} title="Activate with XRPL account" onClick={() => { openXApp('nixer.xahauimport', 'XRPL » Xahau import') }} xAppStyle={props.xAppStyle} />
+                                    </>
+                                    : <>
+                                        <ActionPrimary icon={iconCoins} title="Buy XRP" onClick={() => { openBuySellXApp() }} xAppStyle={props.xAppStyle} />
+                                        <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
+                                        <ActionSecondary icon={exchangeIcon} title="Fund via Exchange" onClick={() => { props.setUseExchange(true); setUseExchange(true); }} xAppStyle={props.xAppStyle} />
+                                    </>
                                 }
                             </div>
                         </div>
