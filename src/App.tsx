@@ -68,6 +68,8 @@ export default function App() {
           return;
         }
 
+        console.log({ bearerFromSdk });
+
         const [accountInfo, prefillCheck] = await Promise.all([
           XRPLClient.send({
             "command": "account_info",
