@@ -9,7 +9,7 @@ import iconChevronDown from '../../../assets/chevron-down.png';
 import iconChevronLeft from '../../../assets/chevron-left.png';
 
 export default function AccountActivation(props: any) {
-    const [chosenAmount, setChosenAmount] = useState<number>(10);
+    const [chosenAmount, setChosenAmount] = useState<number>(1);
     const [pageIsLoading, setPageIsLoading] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<string>(props.accountToActivate); // Changed by Wietse for temp default
     const [selectedAccountName, setSelectedAccountName] = useState<string>('Select source account...'); // Changed by Wietse for temp default
@@ -19,16 +19,14 @@ export default function AccountActivation(props: any) {
     const [nodeWss, setNodeWss] = useState<string>(props.nodewss);
     const [currency, setCurrency] = useState<string>('XRP');
     const [isActivated, setIsActivated] = useState<boolean>(false);
-    const [amountSteps, setAmountSteps] = useState<Array<number>>([10, 25, 50, 75, 100, 200])
-    const [accountReserve, setAccountReserve] = useState<number>(10);
+    const [amountSteps, setAmountSteps] = useState<Array<number>>([1, 2, 5, 10, 20, 50])
+    const [accountReserve, setAccountReserve] = useState<number>(1);
     useEffect(() => {
         props.xumm.environment.ott.then((data: any) => {
             setNodeWss(data.nodewss);
             if (data.nodetype === 'XAHAU') {
                 setCurrency('XAH');
                 setAmountSteps([1, 10, 15, 50, 75, 100]);
-                setChosenAmount(1);
-                setAccountReserve(1);
             }
         });
         if (selectedAccount === props.accountToActivate) {

@@ -19,7 +19,7 @@ export default function Manual(props: any) {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [useExchange, setUseExchange] = useState<boolean>(false);
     const currency = props.nodetype === 'XAHAU' ? 'XAH' : 'XRP';
-    const accountReserve = props.nodetype === 'XAHAU' ? 1 : 10;
+    const accountReserve = 1;
 
     let exchangeIcon = iconExchangeWhite;
     let walletIcon = iconWalletWhite;

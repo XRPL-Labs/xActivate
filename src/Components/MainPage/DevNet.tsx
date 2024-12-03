@@ -13,7 +13,7 @@ export default function DevNet(props: any) {
     const [showError, setShowError] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const currency = props.profile.nodetype === 'XAHAUTESTNET' ? 'XAH' : 'XRP';
-    const accountReserve = currency === 'XAH' ? 1 : 10;
+    const accountReserve = 1;
 
     let imageActivateAccount = imageAddAccountDark
     if (props.xAppStyle === 'light') {
