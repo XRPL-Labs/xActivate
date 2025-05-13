@@ -115,12 +115,18 @@ export default function Manual(props: any) {
                                 {props.nodetype === 'XAHAU'
                                     ? <>
                                         <ActionPrimary icon={iconCoins} title="Buy XAH" onClick={() => { openXApp('c14.onramp', 'Buy XAH with C14') }} xAppStyle={props.xAppStyle} />
-                                        <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
+                                        {
+                                            props?.profile?.numAccounts !== 1 &&
+                                                <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
+                                        }
                                         <ActionSecondary icon={externalLinkIcon} title="Activate with XRPL account" onClick={() => { openXApp('nixer.xahauimport', 'XRPL » Xahau import') }} xAppStyle={props.xAppStyle} />
                                     </>
                                     : <>
                                         <ActionPrimary icon={iconCoins} title="Buy XRP" onClick={() => { openBuySellXApp() }} xAppStyle={props.xAppStyle} />
-                                        <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
+                                        {
+                                            props?.profile?.numAccounts !== 1 &&
+                                                <ActionSecondary icon={walletIcon} title="Fund with existing account" onClick={() => { props.setUseAccount(true) }} xAppStyle={props.xAppStyle} />
+                                        }
                                         <ActionSecondary icon={exchangeIcon} title="Fund via Exchange" onClick={() => { props.setUseExchange(true); setUseExchange(true); }} xAppStyle={props.xAppStyle} />
                                     </>
                                 }
