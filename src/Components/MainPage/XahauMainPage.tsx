@@ -5,7 +5,7 @@ import Confetti from "../Confetti";
 import { Error as ErrorComponent } from '../Error';
 import * as Sentry from "@sentry/react";
 import Notice from "../Notice";
-
+import successImage from '../../assets/success.webp';
 
 const Loader = lazy(() => import('./Loader'));
 
@@ -80,7 +80,7 @@ export default function XahauMainPage(props: any) {
     return (
         <div className={`w-full h-full flex flex-col items-center relative overflow-y-scroll pb-4 hmax-auto`}>
             <div className={`w-full flex flex-col items-center mt-12`}>
-                <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                <img src={successImage} className="w-[40%] mx-auto" />
                 <h1 className="text-center text-2xl text-primary">Activating your account</h1>
             </div>
             <Suspense>

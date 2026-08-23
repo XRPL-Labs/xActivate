@@ -1,6 +1,7 @@
 import { useState } from "react"
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
+import successImage from '../../assets/success.webp'
 import { XrplClient } from "xrpl-client"
 import Confetti from "../Confetti";
 import { Error as ErrorComponent } from "../Error";
@@ -118,7 +119,7 @@ export default function DevNet(props: any) {
                     <ErrorComponent text={errorMessage} xumm={props.xumm} />
                 }
                 <div className="w-full flex flex-col">
-                    <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                    <img src={successImage} className="w-[40%] mx-auto" />
                     <h1 className="text-center text-2xl text-primary">Activate your account</h1>
                 </div>
                 <p className="m-0 text-secondary mb-4">An account on the Ledger automatically becomes activated when the first {accountReserve} {currency} {accountReserve > 1 ? 'are' : 'is'} sent to the account. This is needed to ensure the network's stability and prevent spam.</p>
