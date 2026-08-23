@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import imageAddAccount from '../../assets/image-add-account.png'
 import imageAddAccountDark from '../../assets/image-add-account-dark.png'
 import Confetti from "../Confetti";
+import successImage from '../../assets/success.webp'
 
 export default function Hurray(props: any) {
 
@@ -14,7 +15,7 @@ export default function Hurray(props: any) {
         <>
             <div className="w-full h-full flex flex-col items-center relative">
                 <div className={`w-full flex flex-col items-center`}>
-                    <img src={imageActivateAccount} className="w-[40%] mx-auto" />
+                    <img src={successImage} className="w-[40%] mx-auto" />
 
                     <h1 className="text-center text-2xl text-primary">Your account is activated!</h1>
                     <p className="m-0 text-secondary">This account is already activated. You can close the xApp and enjoy your Xaman account!</p>
